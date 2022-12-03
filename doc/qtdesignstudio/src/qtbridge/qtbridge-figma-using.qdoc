@@ -1,0 +1,240 @@
+/****************************************************************************
+**
+** Copyright (C) 2021 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Bridge documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \previouspage qtbridge-figma-setup.html
+    \page qtbridge-figma-using.html
+    \nextpage exporting-3d-assets.html
+
+    \title Using \QBF
+
+    \section1 Organizing Designs
+
+    To get the best results during export and import, follow these guidelines
+    when working with Figma:
+
+    \list
+        \li Use pages for different purposes, such as \e sketching for trying
+            out ideas, \e components for creating UI components, \e assets for
+            images that you use in the components, and \e screens for building
+            the UI screens using components and assets.
+        \li Arrange each page into frames. When you are happy with a design,
+            move it from the sketching page to the components page and use it
+            in screens. When you export your assets, you can skip all frames
+            that you don't want to be part of the final UI, to avoid cluttering
+            the \QDS project. The code generated in \QDS corresponds to the
+            structure of your Figma document.
+        \li \QBF supports \e {Figma components}. Each Figma component
+            is exported as a \e {\QDS component}, and each Figma component
+            instance is generated as a respective component instance in the
+            component files generated when you \l{Importing 2D Assets}{import}
+            the design into \QDS.
+        \li Create components in Figma and export them to \QDS before you
+            start making instances of them. In \QDS, add functionality to the
+            components, such as button states and then bring them back to Figma
+            as assets. If you use functional \QDS components in Figma, you will
+            find it easier to merge new iterations of the design to \QDS and
+            continue to build the screens there.
+        \li \QBF does not support exporting changes in component instances.
+            If you make changes to component instances in Figma, you must
+            detach the instances before exporting them. Similarly, if your
+            Figma components contain nested components, Figma allows you to
+            hot swap the nested instance inside the component instance.
+            However, \QBF doesn't support this so you get the original
+            component unless you detach the component instance before
+            exporting it.
+        \li Use descriptive and unique IDs to avoid duplicate IDs after
+            exporting designs and importing them to \QDS.
+    \endlist
+
+    To use the fonts that you use in Figma also in \QDS, you need to add
+    them to \QDS as assets. \QDS deploys them to devices when you preview the
+    UI. For more information, see \l{Using Custom Fonts}.
+
+    \section2 Items You Can Export
+
+    You can export the following parts of your design using \QBF:
+    \list
+        \li Images
+        \li Vector images
+        \li Layers
+            \list
+                \li Text layers
+                \li Shape layers
+            \endlist
+        \li Components
+        \li Component instances
+        \li Frames
+        \li Groups
+    \endlist
+
+    \section2 Using Frames
+
+    Frames are exported as components of the \l Rectangle type by default.
+    However, if you have applied effects to the frames that \QBF cannot
+    handle, such as gradient fill colors or a mixed radius, the frames are
+    exported as images.
+
+
+    \section2 Using Variants
+    Figma variants are exported as a component with states. All variants
+    inside a \e component-set are merged together and the differences across
+    the variants are translated into states.
+
+    For an optimal output, follow these guidelines:
+    \list
+        \li \QBF panel is disabled for variants. Before adding
+            a variant to a component, the \QBF settings for the component
+            should be complete.
+        \li Do not change the layer names across the variants. The \l ID  of
+            a layer is derived from the layer name which in turn is used
+            to identify the property differences for the state generation, so
+            it is essential to keep the layer names same across variants.
+        \li Adding and removing layers across the variants is fine and
+            encouraged to create the variant differences.
+    \endlist
+
+    \section1 Exporting Designs
+
+    \image qt-figma-bridge.png "Qt Bridge for Figma"
+
+    To export your design using \QBF:
+
+    \list 1
+        \li Specify settings for exporting each group and layer.
+        \li Select \uicontrol Export to export your design.
+        \li When the exporting is done, select \uicontrol OK.
+    \endlist
+
+    \QBF exports everything into a .qtbridge archive. You can import the archive
+    into a project in \QDS, as described in \l{Importing 2D Assets}.
+
+    \section1 Export Settings
+
+    You can specify export settings in the \uicontrol Home tab and in the
+    \uicontrol Settings tab.
+
+    \section2 Home
+
+    You can specify settings for exporting each group and layer.
+
+    \table
+    \header
+        \li Name
+        \li Purpose
+    \row
+        \li \uicontrol ID
+        \li \QBF automatically proposes identifiers for all groups and layers.
+            You can change them in this field. Use unique and descriptive IDs
+            to avoid duplicate IDs when the layer and the respective artwork
+            are imported into \QDS.
+    \row
+        \li \uicontrol {Export as}
+        \li Determines how to export the group or layer:
+            \list
+               \li \uicontrol Child exports each asset of the selected group
+                    or layer as a separate component file. Images are exported
+                    as separate files nested in \l{Images}{Image} components.
+                    You select the image file format in \uicontrol Settings >
+                    \uicontrol {Asset settings}.
+
+                    Figma rectangles are exported as \l{basic-rectangle}
+                    {Rectangle} components. Figma vectors are exported as
+                    \l{SVG Path Item} components from the \l{Shapes}
+                    {Qt Quick Studio Components} module.
+                \li \uicontrol Merged merges the selected groups and layers
+                    into one component.
+                \li \uicontrol Skipped completely skips the selected layer.
+            \endlist
+    \row
+        \li \uicontrol {Custom Component Type}
+        \li Determines the \l{Component Types}{component type} to morph this
+            layer into. The component that is generated during import will be
+            of this type. For example, if you drew a button, you can export
+            it as a \l Button component from the Qt Quick Controls module.
+            You can provide the import statement of the
+            \l{Adding and Removing Modules}{module} where the component
+            is defined in the \uicontrol {Imports} field.
+    \row
+        \li \uicontrol Properties
+        \li Sets values of properties for the component. You can add properties
+            and modify their values in \QDS.
+    \row
+        \li \uicontrol Imports
+        \li If you want to make additional components available in the component
+            file, you can enter the import statements of the modules that
+            contain the components in this field. For example, to use components
+            from version 2.3 of the Qt Quick Controls module, you need the
+            import statement \c {QtQuick.Controls 2.3} and to use version 1.0
+            Qt Quick Studio Components, you need the import statement
+            \c {QtQuick.Studio.Components 1.0}. You can add components from all
+            the available modules in \QDS later. You can also import a module as
+            an \e alias.
+    \row
+        \li \uicontrol Alias
+        \li Exports the component generated from this layer as an alias in the
+            parent component.
+    \row
+        \li \uicontrol Visible
+        \li Determines the visibility of the layer.
+    \row
+        \li \uicontrol Clip
+        \li Enables clipping in the component generated from the layer. The
+            generated component will clip its own painting, as well as the
+            painting of its children, to its bounding rectangle.
+    \endtable
+
+    \section2 Settings
+
+    \image qt-figma-bridge-settings.png
+
+    You can export assets in the selected format (JPG, PNG, or SVG).
+
+    By default, vectors are exported as \l{SVG Path Item} components from the
+    Qt Quick Studio Components module. This might not work for layers that have
+    particular effects applied to them. In that case, the layers are exported
+    as images.
+
+    Because MCUs only support simple images, disable the
+    \uicontrol {Export as shapes} check box when designing for MCUs.
+
+    \table
+    \header
+        \li Name
+        \li Purpose
+    \row
+        \li \uicontrol {Asset settings}
+        \li Exports assets in the selected format (JPG, PNG, or SVG).
+    \row
+        \li \uicontrol {Export as shapes}
+        \li Exports vectors as components of the type \l{SVG Path Item} from the
+            Qt Quick Studio Components module.
+    \row
+        \li \uicontrol {Reset plugin data}
+        \li Resets all settings for all layers and groups (also in the
+            \uicontrol Home tab) to default values. This means that you
+            will lose all your changes to the settings.
+    \endtable
+*/

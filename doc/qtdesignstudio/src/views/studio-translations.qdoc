@@ -1,0 +1,238 @@
+/****************************************************************************
+**
+** Copyright (C) 2021 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \page studio-translations.html
+    \previouspage qtquick-states-view.html
+    \nextpage qtquick-timeline-view.html
+
+    \title Translations
+
+    You handle translations and multi-language support in the
+    \uicontrol {Translations} view.
+
+    \image studio-translations-view.png "Translations view"
+
+    \section1 Summary of Translations View Buttons
+
+    The \uicontrol {Translations} view contains the following buttons.
+
+    \table
+    \header
+        \li Button
+        \li Function
+        \li Read More
+    \row
+        \li \inlineimage icons/select-languages.png
+        \li Select which languages you want your project to support.
+        \li
+    \row
+        \li \inlineimage icons/export-json-translations.png
+        \li Export all your translations to a JSON file.
+        \li \l{Importing and Exporting Translations}
+    \row
+        \li \inlineimage icons/import-json-translations.png
+        \li Import translations from a JSON file.
+        \li \l{Importing and Exporting Translations}
+    \row
+        \li \inlineimage icons/generate-translation-files.png
+        \li Generate Qt compiled translation source files (\e{.qm})
+        and Qt translation source files (\e{.ts}).
+        \li \l{Generating Qt Translation Source Files}
+    \row
+        \li \inlineimage icons/project-translation-test.png
+        \li Run translation test for several documents and create a test report.
+        \li \l{Running Translation Test for Several Documents}
+    \row
+        \li \inlineimage icons/qml-translation-test.png
+        \li Run translation test for the currently open document. This test
+        shows translation warnings in \uicontrol{From Editor} and creates a
+        test report.
+        \li \l{Running Translation Test for a Single Document}
+    \row
+        \li \inlineimage icons/export-translations.png
+        \li Export all translations used in your project or all translations
+        currently visible in your UI.
+        \li \l{Exporting Translations in Other Ways}
+    \endtable
+
+    \section1 Importing and Exporting Translations
+
+    You can import and export translations using JSON files.
+
+    Below is an example of a JSON translation file:
+
+    \code
+    {
+        "translatables": [
+            {
+                "trId": "translation_password",
+                "translations": [
+                    {
+                        "language": "en",
+                        "translation": "Password"
+                    },
+                    {
+                        "language": "fi",
+                        "translation": "Salasana"
+                    }
+                ]
+            }
+        ]
+    }
+    \endcode
+
+    \section2 Importing Translations
+
+    To import a JSON translation file to your \QDS project:
+    \list
+      \li In the \uicontrol Translation view in \QDS, select
+      \inlineimage icons/import-json-translations.png
+      and open the JSON file.
+    \endlist
+    Matching \c qsTrId text strings are translated. For example,
+    if you have specified the following translation ID in the JSON file:
+      \code
+      "trId": "translation_password",
+      "translations": [
+          {
+              "language": "en",
+              "translation": "Password"
+          },
+          {
+              "language": "fi",
+              "translation": "Salasana"
+          }
+      ]
+      \endcode
+      the translation applies to all \c qsTrId strings with that translation
+      ID in your project.
+
+    \section1 Generating Qt Translation Source Files
+
+    You need to generate Qt compiled translation source files (\e{.qm})
+    and Qt translation source files (\e{.ts}) for your project to have the
+    translations working in the actual application and \uicontrol{Live Preview}.
+
+    To generate these files, select
+    \inlineimage icons/generate-translation-files.png
+    in the \uicontrol Translations view. The files are generated
+    in \e{<project-folder>/i18n}.
+
+    \section1 Running Translation Test for a Single Document
+
+    You can run the translation test to find missing translations
+    and translations where the text exceeds the text element boundaries. Running
+    the test is a quick way to check the translations in the document you have
+    open in \uicontrol{Form Editor} as it highlights errors in the UI.
+
+    To run the test for the currently open document:
+
+    \list 1
+      \li In the \uicontrol Translations view, select
+      \inlineimage icons/qml-translation-test.png
+      .
+      \li Select the tests to run and the highlight color
+      for each test:
+        \list
+          \li \uicontrol{Success} highlights translations without any warnings.
+          \li \uicontrol{Missing translation} highlights translations that are
+          missing for one or more languages.
+          \li \uicontrol{Exceeds boundaries} highlights translations where
+          the text is too long to fit in the text object.
+        \endlist
+        \image translation-tester.png
+      \li Select \uicontrol{Run Tests}.
+    \endlist
+
+    When the test has completed, you can see the test result highlights in
+    \uicontrol{Form Editor}.
+    \image qml-translation-test-result.png
+
+    If the test finds an error, it is highlighted for all languages. For
+    example, if a translation is missing for Swedish, it is also highlighted
+    as missing when you view any other language.
+
+    Running the QML language test generates a report in JSON format. This
+    report is generated in the project root folder with the name
+    \e {translation_report_<ui-file-name>.json}.
+
+    Example of QML language test report:
+
+    \code
+    {
+        "components": [
+            {
+                "componentPath": "C:/project-directory/content/Screen01.ui.qml",
+                "errors": [
+                    {
+                        "column": 15,
+                        "errorType": "Exceeds",
+                        "line": 45
+                    },
+                    {
+                        "column": 15,
+                        "errorType": "Missing translation",
+                        "line": 59
+                    }
+                ]
+            }
+        ]
+    }
+    \endcode
+
+    The report shows the type of error as well as line and column of the
+    affected text element in the \e{ui.qml} file.
+
+    \section1 Running Translation Test for Several Documents
+
+    You can run the project translation test on several \e{.ui.qml} files
+    at the same time. \QDS runs the same tests as during the
+    \l{Running Translation Test for a Single Document}{Translation Test} and
+    generates the same test reports but does not highlight errors in the UI.
+
+    To run the translation test for several documents:
+    \list 1
+      \li Select
+      \inlineimage icons/project-translation-test.png
+      in the \uicontrol Translations view.
+      \li Select the files that you want to include in the test.
+      \li Select \uicontrol{Run Tests}.
+    \endlist
+
+    \section1 Exporting Translations in Other Ways
+
+    Select
+    \inlineimage icons/export-translations.png
+    in the \uicontrol Translations view, for alternative ways to
+    export translations:
+    \list
+      \li \uicontrol{Export used translations to JSON} exports
+      all translations from the translation database that are currently in use
+      in your project.
+      \li \uicontrol{Export current documents translations to JSON} exports all
+      translations from the currently open documents in your project.
+    \endlist
+*/

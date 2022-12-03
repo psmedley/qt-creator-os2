@@ -1,0 +1,214 @@
+/****************************************************************************
+**
+** Copyright (C) 2022 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+// **********************************************************************
+// NOTE: the sections are not ordered by their logical order to avoid
+// reshuffling the file each time the index order changes (i.e., often).
+// Run the fixnavi.pl script to adjust the links to the index order.
+// **********************************************************************
+
+/*!
+    \previouspage creator-diff-editor.html
+    \page creator-clang-codemodel.html
+    \nextpage creator-finding-overview.html
+
+    \title Parsing C++ Files with the Clang Code Model
+
+    The \e {code model} is the part of an IDE that understands the language you
+    are using to write your application. It is the framework that allows \QC
+    to provide the following services:
+
+    \list
+
+        \li \l{Completing Code}{Code completion}
+
+        \li Syntactic and \l{Semantic Highlighting}{semantic highlighting}
+
+        \li Navigating in the code by using the \l{Searching with the Locator}
+            {locator}, \l{Moving to Symbol Definition or Declaration}
+            {following symbols}, and so on
+
+        \li Inspecting code by using the \l{Browsing Project Contents}
+            {class browser}, the \l{Viewing Defined Types and Symbols}
+            {outline}, and so on
+
+        \li Diagnostics
+
+        \li \l{Viewing Function Tooltips}{Tooltips}
+
+        \li \l{Finding Symbols}{Finding and renaming symbols}
+
+        \li \l{Applying Refactoring Actions}{Refactoring actions}
+
+    \endlist
+
+    \QC comes with a plugin that provides some of these services
+    for C++ on top of \l{https://clangd.llvm.org/}{Clangd}.
+
+    \section1 About the Clang Code Model
+
+    The Clang project provides libraries for parsing
+    C language family source files. The feedback you get through warning and
+    error markers is the same as a compiler will give you, not an incomplete
+    set or a close approximation, as when using the built-in \QC code model.
+    Clang focuses on detailed information for diagnostics, which is really
+    useful if the code contains typos, for example.
+    We make use of these libraries via the clangd tool, which implements
+    an \l{https://microsoft.github.io/language-server-protocol/}{LSP} server.
+
+    Clang keeps up with the development of the C++ language. At the time of this
+    writing, it supports C++98/03, C++11, C++14, C++17, C89, C99, Objective-C,
+    and Objective-C++.
+
+    On the downside, for large projects using Clang as code model is slower than
+    using the built-in code model. Clang does not need to generate object files,
+    but it still needs to parse and analyze the source files. For small projects
+    that only use STL, this is relatively fast. But for larger projects that
+    include several files, processing a single file and all the included files
+    can take a while.
+
+    The Clang code model plugin now provides some of the services that were
+    previously provided by the built-in C/C++ code model. Currently, the
+    following services are implemented:
+
+    \list
+
+        \li Code completion
+        \li Syntactic and semantic highlighting
+        \li \l{Using Clang Tools}{Diagnostics}
+        \li Outline of symbols
+        \li Tooltips
+        \li Following symbols
+        \li Renaming symbols
+        \li Finding occurrences of symbols
+
+    \endlist
+
+    To use the built-in code model instead, select \uicontrol Edit > \uicontrol Preferences >
+    \uicontrol C++ > \uicontrol clangd, and deselect the \uicontrol {Use clangd} check box.
+    This setting also exists on the project level, so that you can have the clang-based
+    services generally enabled, but switch them off for for certain projects, or vice versa.
+
+    You can configure Clang diagnostics either globally or separately for:
+
+    \list
+        \li Clang code model (globally or at project level)
+        \li \l{Using Clang Tools}{Clang tools} (globally or at project level)
+    \endlist
+
+    \section1 Configuring Clang Code Model
+
+    To configure the Clang code model globally:
+
+    \list 1
+
+        \li Select \uicontrol Edit > \uicontrol Preferences > \uicontrol C++ >
+            \uicontrol {Code Model}.
+
+            \image qtcreator-clang-code-model-options.png "C++ Code Model preferences"
+
+        \li To instruct the code model to interpret ambiguous header files as C
+            language files if you develop mainly using C, select the
+            \uicontrol {Interpret ambiguous headers as C headers} check box.
+
+        \li To process precompiled headers, deselect the
+            \uicontrol {Ignore precompiled headers} check box.
+
+        \li To avoid out-of-memory crashes caused by indexing huge source files
+            that are typically auto-generated by scripts or code, the size of
+            files to index is limited to 5MB by default. To adjust the limit,
+            edit the value for the \uicontrol {Do not index files greater than}
+            check box. To index all files, deselect the check box.
+
+    \endlist
+
+    \section1 Configuring clangd
+
+    The clangd \e index provides exact and complete results for services such
+    as finding references, following symbols under cursor, and using the
+    locator, even for complex constructs. When you \l{Opening Projects}
+    {open a project}, clangd scans the source files to generate the index. For
+    large projects, this can take a while, but the index is persistent and
+    re-scanning is incremental, so nothing is lost by closing and re-starting
+    \QC.
+
+    The document outline in the \l{Viewing Defined Types and Symbols}
+    {Outline} view is backed by clangd's document symbol support, which
+    makes the results more reliable than before.
+
+    To specify settings for clangd:
+
+    \list 1
+        \li Select \uicontrol Edit > \uicontrol Preferences > \uicontrol C++ >
+            \uicontrol Clangd > \uicontrol {Use clangd}.
+            \image qtcreator-options-clangd.png "clangd preferences"
+        \li In \uicontrol {Path to executable}, enter the path to clangd
+            version 13, or later.
+        \li For more accurate results during global symbol searches, select
+            \uicontrol {Enable background indexing}. However, this increases the
+            CPU load the first time you open the project.
+        \li Select \uicontrol {Insert header files on completion} to allow
+            clangd to insert header files as part of symbol completion.
+        \li By default, clangd attempts to use all unused cores. You can set a
+            fixed number of cores to use in \uicontrol {Worker thread count}.
+        \li In \uicontrol {Document update threshold}, specify the amount of
+            time \QC waits before sending document changes to the server.
+            If the document changes again while waiting, this timeout is reset.
+        \li Select \uicontrol {Ignore files greater than} to make parsing faster
+            by ignoring big files. Specify the maximum size of files to parse in
+            the field next to the check box.
+        \li The \uicontrol {Diagnostic Configuration} field shows the Clang
+            checks to perform. Click the value of the field to open the
+            \uicontrol {Diagnostic Configurations} dialog, where you can
+            select and edit the checks to perform.
+    \endlist
+
+    \section1 Clang Checks
+
+    In addition to using the built-in checks, you can select \uicontrol Copy to
+    create copies of them and edit the copies to fit your needs.
+
+    \uicontrol {Build-system warnings} displays warnings as specified
+    by the build system.
+
+    \uicontrol {Checks for questionable constructs} combines the \c -Wall and
+    \c -Wextra checks for easily avoidable questionable constructions and some
+    additional issues.
+
+    Clang checks begin with \c -W. Each check also has a negative version that
+    begins with \c -Wno.
+
+    Keep in mind that some options turn on other options. For more information,
+    see \l{https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html}
+    {Options to Request or Suppress Warnings} or the GCC or Clang manual pages.
+
+    \section1 Specifying Clang Code Model Settings at Project Level
+
+    You can specify Clang code model settings at project level by selecting
+    \uicontrol Projects > \uicontrol {clangd}.
+
+    \include creator-compilation-database.qdocinc using compilation databases
+
+*/

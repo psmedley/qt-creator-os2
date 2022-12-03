@@ -1,0 +1,93 @@
+/****************************************************************************
+**
+** Copyright (C) 2021 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \page quick-property-bindings.html
+    \previouspage quick-signals.html
+    \nextpage quick-dynamic-properties.html
+
+    \title Adding Bindings Between Properties
+
+    To dynamically change the behavior of a component, you can create a
+    \e binding between the properties of two components. To create a property
+    binding, a property is assigned a JavaScript expression that evaluates to
+    the desired value. Behind the scenes, the variables in the binding
+    expression are monitored. When a change is detected, the binding
+    expression is re-evaluated and the new result is applied to the property.
+
+    At its simplest, a binding may be a reference to another property.
+    For example, the height of a component can be bound to the height of its
+    parent, so that when the parent height changes, the component height is
+    adjusted automatically.
+
+    For more information about the use of property bindings, see
+    \l{Property Binding}.
+
+    You can create bindings between components in \uicontrol Bindings.
+
+    \image qmldesigner-bindings.png
+
+    To bind a property of a component to the property of another component:
+
+    \list 1
+        \li Select \uicontrol View > \uicontrol Views >
+             \l {Connection View} > \uicontrol {Bindings}.
+        \li Select the \inlineimage icons/plus.png
+            (\uicontrol Add) button to add a binding for the currently selected
+            component. The component ID is displayed in the \uicontrol Item
+            column.
+          \li Double-click the value in the \uicontrol Property column to select
+            the property to bind to a source property.
+        \li Double-click the value in the \uicontrol {Source Item} column to
+            select the component whose property you want to use to determine the
+            behavior of the target component.
+        \li Double-click the value in the \uicontrol {Source Property} column
+            to select the property to bind the target property to.
+    \endlist
+
+    Right-click a binding and select \uicontrol {Open Binding Editor} in
+    the context menu to specify the binding as a JavaScript expression in
+    \uicontrol {Binding Editor}. For more information, see \l{Setting Bindings}.
+
+    \image qmldesigner-binding-editor.png "Binding Editor"
+
+    For examples of creating property bindings, see:
+
+    \list
+        \li \l{Using States to Change Component Property Values}
+        \if defined(qtdesignstudio)
+        \li \l{Exporting Properties}
+        \else
+        \li \l{Moving the Bubble} in \l{Creating a Mobile Application}
+        \endif
+    \endlist
+
+    For more information, watch the following video:
+
+    \youtube UfvA04CIXv0
+
+    \include creator-logical-operators.qdocinc logical operators
+
+*/

@@ -1,0 +1,104 @@
+/****************************************************************************
+**
+** Copyright (C) 2021 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \page quick-components.html
+    \if defined(qtdesignstudio)
+    \previouspage studio-flow-external-events.html
+    \else
+    \previouspage creator-using-qt-quick-designer.html
+    \endif
+    \nextpage quick-preset-components.html
+
+    \title Using Components
+
+    A \e component is a reusable building block for a UI.
+
+    \QDS comes with \e {preset components} that you can use in your UI by
+    creating instances of them.
+    The preset components are similar to \e Symbols in Sketch or \e Prefab in
+    Unity.
+
+    Some of the preset components represent simple shapes, text, or images,
+    while others represent complex UI controls with full functionality, such
+    as spin boxes or sliders. You can also add instances of preset
+    \l {3D Components}{3D components} to your UIs.
+
+    To build your own components, you can modify the \e properties of the
+    component instances and combine them.
+
+    A component is specified within one file (with the file extension
+    \e ui.qml or \e .qml). For example, a Button component may be defined
+    in \e Button.ui.qml. Typically, the visual appearance of a component
+    is defined in a \e {UI file} (ui.qml). To create component files,
+    you can use \l{Creating Components from Scratch}{wizard templates}, or
+    \l{Turning Component Instances into Custom Components}
+    {move component instances into separate component files}.
+
+    Select \uicontrol Components to view the preset components that
+    have been added to your project. If you cannot find the components you need,
+    add the relevant modules to your project, as described in
+    \l {Adding and Removing Modules}.
+
+    \image qtquick-components-tab.png "Components"
+
+    Read more about components:
+
+    \list
+        \li \l {Preset Components}
+        \li \l {Creating Component Instances}
+        \li \l {Creating Custom Components}
+    \endlist
+
+    \section1 Using Components Economically
+
+    It is important to understand the performance costs associated with using
+    components.
+
+    To use components efficiently and economically:
+
+    \list
+        \li Componentize your design by packaging your resources into reusable
+            components that can be conveniently recombined to suit the needs of
+            your UI.
+        \li Use as few components as necessary. To minimize the number of
+            components, use \l{Adding Property Aliases}{alias properties} and
+            \l{Adding States}{states} to create the differences in your
+            component instances. We recommend reusing components
+            instead of duplicating them, so the components do not need to be
+            processed as completely new component types. This reduces loading
+            and compilation time as well as the size of the binary.
+        \li Any content that is data-driven should be exported as a public
+            property (alias property) of the relevant component. For example,
+            a speedometer should have an \c int or \c real property for speed
+            to which the UI is bound.
+        \li Separate UI from the application logic. Designers should work with
+            the \l{UI Files}{UI files} (.ui.qml), while developers should work
+            on the corresponding implementation files (.qml) to define their
+            programmatic behaviors or JavaScript. This enables iteration from
+            both the design and development side of the process without the the
+            risk of overwriting each other's work.
+    \endlist
+*/

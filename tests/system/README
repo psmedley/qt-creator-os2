@@ -1,0 +1,66 @@
+Prerequisites - general information
+-----------------------------------
+Squish tests inside this folder have several prerequisites to get them running.
+
+First - and most important - you have to own a valid Squish license. At least Squish 6.0 is required.
+
+Second - some of the test suites/test cases expect Qt versions to be installed in their default
+locations. On Linux/macOS this is ~/Qt5.x.1 and on Windows this is C:\Qt\Qt5.x.1. It's easiest to
+use installations of the official opensource Qt packages. Just install the Qt version for the
+respective toolchain with the components (if available):
+- (Desktop) <toolchain> <bitness>, e.g. Desktop gcc 64-bit
+- Qt Quick Controls (if available)
+- Qt Script
+
+The exact versions and toolchains are:
+
+Linux:
+Qt 5.4.1 (gcc)
+Qt 5.10.1 (gcc)
+Qt 5.14.1 (gcc)
+
+macOS:
+Qt 5.10.1 (clang)
+Qt 5.14.1 (clang)
+
+Windows:
+Qt 5.4.1 (gcc)
+Qt 5.10.1 (MSVC2015, 32 bit)
+Qt 5.14.1 (MSVC2017, 64 bit)
+
+Third - you'll have to provide some additional repositories.
+These additional repositories are located inside ~/squish-data or C:\Users\<user>\squish-data (depending on the OS you're on).
+You can also just provide them inside a different folder and specify the folder with the environment variable SYSTEST_SRCPATH.
+This folder must contain the following:
+ * a QtCreator repository (or source copy) of tag v4.7.0 named 'creator' including the submodule src/shared/qbs
+ * a subfolder called 'creator-test-data'
+ * a speedcrunch 0.11 repository (or source copy) inside 'creator-test-data' named 'speedcrunch'
+
+Fourth - you'll have to make sure that some needed tools are available (no matter on which OS you're on).
+ * cmake 3.14 or newer
+ * wget or curl, capable of HTTPS
+Normally it should be okay to just install them as usual and add their executables' path(s) to the PATH variable.
+
+Fifth - Qt Creator must be built on a Qt without Qt WebEngine or Qt WebKit.
+
+On macOS make sure you are using the correct keyboard layout to avoid problems when using keyboard interaction. Tested and known to be
+working would be 'U.S. International - PC', while pure 'U.S.' had problems.
+Use the settings in System Preferences > Keyboard > Input Sources to install missing keyboard layouts and ensure you have set it as default.
+
+Attention! If any of these prerequisites cannot be satisfied the tests will likely fail (or not run at all).
+
+
+Prerequisites - debugging and analyzing
+-----------------------------------------
+In tst_simple_debug from suite_debugger, Creator needs to read data from an application it
+started. On Windows, this has the following prerequisites:
+Either:
+    * have no firewall at all enabled (sure that's a bad idea)
+Or:
+    * run Windows with English UI
+    * have the Windows Firewall enabled (no other firewalls are handled by the scripts)
+    * run the Squish tests with administrator privileges
+    * additionally the UAC should be disabled, too
+
+Otherwise you'll have some trouble with popping up dialogs from the firewall.
+If you're using a different firewall - try to figure out and add a rule for this.

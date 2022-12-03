@@ -1,0 +1,130 @@
+QFrame {
+    background-color: creatorTheme.DSpanelBackground;
+    color: creatorTheme.DStextColor;
+    font-size: creatorTheme.captionFontPixelSize;
+    border-radius: 0px;
+}
+
+QTableView {
+    color: creatorTheme.DStextColor;
+    selection-color: creatorTheme.DStextSelectedTextColor;
+    selection-background-color: creatorTheme.DStextSelectionColor;
+}
+
+QTabBar QToolButton {
+    background-color: creatorTheme.DSpanelBackground;
+    border: 1px solid creatorTheme.QmlDesigner_BackgroundColorDarker;
+    border-radius: 0px;
+}
+
+QTableView::item {
+    border: 0px;
+    padding-left: 4px;
+}
+
+QTableView::item:focus {
+    border: none;
+    background-color: transparent;
+}
+
+QTableView::item:selected {
+    border: none;
+}
+
+QHeaderView::section {
+    background-color: creatorTheme.DSheaderViewBackground;
+    border: 0px;
+    color: creatorTheme.DStextColor;
+    margin-right: 1px;
+    padding-left: 6px;
+}
+
+QTableView {
+    alternate-background-color: creatorTheme.DStableViewAlternateBackground;
+}
+
+QWidget#widgetSpacer {
+    background-color: creatorTheme.DStabActiveBackground;
+}
+
+QStackedWidget {
+    border: 0px;
+    background-color: creatorTheme.DStabActiveBackground;
+}
+
+QTabBar::tab:selected {
+    border: none;
+    border-image: none;
+    image: none;
+    background-color: creatorTheme.DStabActiveBackground;
+    color: creatorTheme.DStabActiveText;
+}
+
+QTabBar::tab {
+    width: 92px;
+    height: 22px;
+    margin-top: 0x;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    font: bold;
+    font-size: creatorTheme.captionFontPixelSize;
+    background-color: creatorTheme.DStabInactiveBackground;
+    color: creatorTheme.DStabInactiveText;
+}
+
+/*
+QSpinBox {
+    font-size: creatorTheme.captionFontPixelSize;
+    color: creatorTheme.DStextColor;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 12px;
+    border: 1px solid creatorTheme.DScontrolOutline;
+    background-color: creatorTheme.DScontrolBackground;
+    min-height: 22px;
+}
+
+QDoubleSpinBox {
+    font-size: creatorTheme.captionFontPixelSize;
+    color: creatorTheme.DStextColor;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 12px;
+    border: 1px solid creatorTheme.DScontrolOutline;
+    background-color: creatorTheme.DScontrolBackground;
+    min-height: 22px;
+}
+*/
+
+QLineEdit {
+    color: creatorTheme.DStextColor;
+    selection-color: creatorTheme.DStextSelectedTextColor;
+    selection-background-color: creatorTheme.DStextSelectionColor;
+    font-size: creatorTheme.captionFontPixelSize;
+    border: 1px solid creatorTheme.DScontrolOutline;
+    min-height: 26px;
+    background-color: creatorTheme.DScontrolBackground;
+}
+
+QComboBox {
+    color: creatorTheme.DStextColor;
+    selection-color: creatorTheme.DStextSelectedTextColor;
+    selection-background-color: creatorTheme.DStextSelectionColor;
+    font-size: creatorTheme.captionFontPixelSize;
+    border: 1px solid creatorTheme.DScontrolOutline;
+    min-height: 26px;
+    background-color: creatorTheme.DScontrolBackground;
+}
+
+QComboBox QAbstractItemView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+    background-color: creatorTheme.DSpopupBackground; /* sets background of the menu */
+    border: 1px solid creatorTheme.DScontrolOutline;
+    margin: 0px; /* some spacing around the menu */
+    color: creatorTheme.DStextColor;
+    selection-color: creatorTheme.DStextSelectedTextColor;
+    selection-background-color: creatorTheme.DSinteraction;
+}

@@ -1,0 +1,174 @@
+ADS--DockContainerWidget {
+    background: creatorTheme.DSdockContainerBackground;
+}
+
+ADS--DockContainerWidget QSplitter::handle {
+    background: creatorTheme.DSdockContainerSplitter;
+}
+
+ADS--DockAreaWidget {
+    background: creatorTheme.DSdockAreaBackground;
+}
+
+ADS--DockAreaWidget #tabsMenuButton::menu-indicator {
+    image: none;
+}
+
+ADS--DockSplitter::handle:horizontal {
+    width: 1px;
+    background: creatorTheme.DSdockWidgetSplitter;
+}
+
+ADS--DockSplitter::handle:vertical {
+    height: 1px;
+    background: creatorTheme.DSdockWidgetSplitter;
+}
+
+ADS--DockWidgetTab {
+    background-color: creatorTheme.DStabInactiveBackground;
+    border-color: creatorTheme.DStabSplitter;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+}
+
+ADS--DockWidgetTab QLabel {
+    color: creatorTheme.DStabInactiveText;
+}
+
+ADS--DockWidgetTab[activeTab="true"] {
+    background: creatorTheme.DStabActiveBackground;
+}
+
+ADS--DockWidgetTab[activeTab="true"] QLabel {
+    color: creatorTheme.DStabActiveText;
+}
+
+ADS--DockWidgetTab[activeTab="true"] > #tabCloseButton:hover {
+    background: creatorTheme.DStabActiveButtonHover;
+}
+
+ADS--DockWidgetTab[activeTab="true"] > #tabCloseButton:pressed {
+    background: creatorTheme.DStabActiveButtonPress;
+}
+
+ADS--DockWidget {
+    background: creatorTheme.DSdockWidgetBackground;
+    border: none;
+}
+
+QWidget#tabsContainerWidget {
+    background: creatorTheme.DStabContainerBackground;
+}
+
+ADS--TitleBarButton {
+    margin: 1px;
+    background: none;
+    border: none;
+}
+
+ADS--TitleBarButton:hover {
+    background-color: creatorTheme.DStitleBarButtonHover;
+}
+
+ADS--TitleBarButton:press {
+    background-color: creatorTheme.DStitleBarButtonPress;
+}
+
+#floatingTitleLabel {
+    color: creatorTheme.DStitleBarText;
+}
+
+#floatingTitleCloseButton {
+    margin: 1px;
+    background: none;
+    border: none;
+}
+
+#floatingTitleCloseButton:hover {
+    background: creatorTheme.DStitleBarButtonHover;
+}
+
+#floatingTitleCloseButton:pressed {
+    background: creatorTheme.DStitleBarButtonPress;
+}
+
+QScrollArea#dockWidgetScrollArea {
+    background-color: creatorTheme.DSpanelBackground;
+    padding: 0px;
+    border: none;
+}
+
+#tabCloseButton {
+    margin: 1px;
+    background: none;
+    border: none;
+}
+
+#tabCloseButton:hover {
+    background: creatorTheme.DStabInactiveButtonHover;
+}
+
+#tabCloseButton:pressed {
+    background: creatorTheme.DStabInactiveButtonPress;
+}
+
+QScrollBar {
+    background: creatorTheme.DSscrollBarTrack;
+}
+
+QScrollBar:vertical {
+    width: 10px;
+}
+
+QScrollBar:horizontal {
+    height: 10px;
+}
+
+QScrollBar::handle {
+    background: creatorTheme.DSscrollBarHandle;
+}
+
+QScrollBar::handle:vertical {
+    min-height: 30px;
+}
+
+QScrollBar::handle:horizontal {
+    min-width: 30px;
+}
+
+QScrollBar::add-line,
+QScrollBar::sub-line,
+QScrollBar::left-arrow,
+QScrollBar::right-arrow,
+QScrollBar::add-page,
+QScrollBar::sub-page {
+    height: 0px;
+    width: 0px;
+}
+
+/* Focus related styling */
+ADS--DockWidgetTab[focused="true"] {
+    background: creatorTheme.DStabFocusBackground;
+}
+
+ADS--DockWidgetTab[focused="true"] > #tabCloseButton:hover {
+    background: creatorTheme.DStabFocusButtonHover;
+}
+
+ADS--DockWidgetTab[focused="true"] > #tabCloseButton:pressed {
+    background: creatorTheme.DStabFocusButtonPress;
+}
+
+ADS--DockWidgetTab[focused="true"] QLabel {
+    color: creatorTheme.DStabFocusText;
+}
+
+ADS--DockAreaTitleBar {
+    background: creatorTheme.DSdockWidgetTitleBar;
+    border-bottom: 2px solid creatorTheme.DStabActiveBackground;
+    padding-bottom: 0px;
+}
+
+ADS--DockAreaWidget[focused="true"] ADS--DockAreaTitleBar {
+    border-bottom-color: creatorTheme.DStabFocusBackground;
+}

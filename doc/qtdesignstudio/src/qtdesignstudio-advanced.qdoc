@@ -1,0 +1,69 @@
+/****************************************************************************
+**
+** Copyright (C) 2021 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Design Studio documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \previouspage creator-qml-performance-monitor.html
+    \page studio-advanced.html
+    \nextpage creator-quick-ui-forms.html
+
+    \title Advanced Designer Topics
+
+    \table
+        \row
+            \li \image front-advanced.png
+            \li Learn more about the UI files (.ui.qml), collecting data about
+                using \QDS, and about packaging applications for delivering
+                them to users or uploading them to app stores.
+    \endtable
+
+    \list
+
+        \li \l{UI Files}
+
+            Some of the wizard templates create projects that contain UI files.
+            You should always edit UI files in \l{Form Editor}
+            and \l Properties, to avoid breaking the code.
+        \li \l{Managing Data Collection}
+
+            \if defined (qtcreator)
+            You can enable \QC to report crashes automatically. If you agreed to
+            pseudonymous user statistics collection during the \QC installation,
+            you can turn it on and determine what type of data is collected and
+            transmitted to the backend storage.
+            \else
+            You can enable \QDS to report crashes automatically. If you enable
+            the telemetry plugin, you can turn on the pseudonymous user
+            statistics collection and determine what type of data is collected
+            and transmitted to the backend storage. You can also modify
+            settings for collecting user feedback.
+            \endif
+        \li \l{Packaging Applications}
+
+            When you are ready to deliver your application to users or upload
+            it to app stores, you can use \QDS to create suitable packages that
+            contain all the necessary files, such as fonts, images, components,
+            and modules.
+    \endlist
+*/

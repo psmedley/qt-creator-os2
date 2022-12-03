@@ -1,0 +1,149 @@
+/****************************************************************************
+**
+** Copyright (C) 2020 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \page quick-dynamic-properties.html
+    \previouspage quick-property-bindings.html
+    \if defined(qtdesignstudio)
+    \nextpage quick-states.html
+    \else
+    \nextpage quick-connections-backend.html
+    \endif
+
+    \title Specifying Dynamic Properties
+
+    Each preset \l{glossary-component}{component} has a set of preset properties
+    that you can specify values for. You can add custom properties that would
+    not otherwise exist for a particular \l{Component Types}{component type}.
+    You bind the properties to dynamic expressions to define global properties
+    for a component that can be read by other components. For example, you can
+    specify global properties for the root component that you can use in the
+    child components.
+
+    For example, to specify spacing between UI elements, you could define a
+    margin for a component that does not have a margin property, and then use
+    \l{Adding Bindings Between Properties}{bindings} to refer to the value of
+    the margin property from other components.
+
+    Similarly, you can add custom properties for your own components that are
+    based on preset components.
+
+    Any content that is data-driven should be exported as a public property
+    (alias property) of the relevant component. For example, a speedometer
+    should have an \e int or \e real property for speed to which the UI is
+    bound.
+
+    You can add properties for components in \l {Connection View} >
+    \uicontrol Properties.
+
+    \image qmldesigner-dynamicprops.png "Custom properties in Connection View Custom Properties tab"
+
+    To add properties for a component:
+
+    \list 1
+        \li Select \uicontrol View > \uicontrol Views >
+            \uicontrol {Connection View} > \uicontrol {Properties}.
+        \li Select the \inlineimage icons/plus.png
+            (\uicontrol Add) button to add a dynamic property for the currently
+            selected component. The component ID is displayed in the \uicontrol Item
+            column.
+        \li Double-click the value in the \uicontrol Property column to give a
+            name to the property. Property names must begin with a lower case
+            letter and can only contain letters, numbers, and underscores.
+            JavaScript \e {reserved words} are not valid property names.
+        \li Double-click the value in the \uicontrol {Property Type} column to
+            specify the \l{Supported Property Types}{type of the property}.
+        \li Double-click the value in the \uicontrol {Property Value} column
+            to specify the value of the property.
+    \endlist
+
+    Right-click a property and select \uicontrol {Open Binding Editor} in
+    the context menu to bind the value of the property to that of another one
+    or to data accessible in the application in \uicontrol {Binding Editor}.
+    For more information, see \l{Setting Bindings}.
+
+    \image qmldesigner-binding-editor.png "Binding Editor"
+
+    The properties you add for a component are displayed in the \l Properties
+    view when you select a component of that type in \l Navigator or
+    \l {Form Editor}.
+
+    \image qtquick-custom-properties.png "Custom properties in Properties view"
+
+    For more information about setting property values in the
+    \l Properties view, see \l{Specifying Component Properties}.
+
+    \if defined(qtcreator)
+    For an example of using custom properties in an application, see
+    \l{Creating a Mobile Application}.
+    \endif
+
+    \section1 Supported Property Types
+
+    The following table describes the supported property types:
+
+    \table
+    \header
+        \li Type
+        \li Description
+    \row
+        \li alias
+        \li \l{Property Aliases}{Property alias} that holds a reference to
+            another property
+    \row
+        \li bool
+        \li Binary \c true or \c false value
+    \row
+        \li color
+        \li Color value that can be specified by using an SVG color name, such
+            as "red", "green", or "lightsteelblue", or a hexadecimal triplet or
+            quad in the form "#RRGGBB" and "#AARRGGBB", respectively. For
+            example, the color red corresponds to a triplet of "#FF0000" and
+            a slightly transparent blue to a quad of "#800000FF".
+            In addition, you can use the following Qt functions: \l{Qt::rgba()}
+            {Qt.rgba()}, \l{Qt::hsva()}{Qt.hsva()}, \l{Qt::hsla()}{Qt.hsla()},
+            \l{Qt::darker()}{Qt.darker()}, \l{Qt::lighter()}{Qt.lighter()}, and
+            \l{Qt::tint()}{Qt.tint()}.
+    \row
+        \li int
+        \li Whole integer number, such as 0, 10, or -20
+    \row
+        \li real
+        \li Number with a decimal point
+    \row
+        \li string
+        \li Free form text string
+    \row
+        \li url
+        \li Resource locator, such as a file name. It can be either  absolute,
+            (\c http://qt-project.org), or relative  (\c pics/logo.png). A
+            relative URL is resolved relative to the URL of the parent
+            component.
+    \row
+        \li variant
+        \li Generic property type. For example, variant properties can store
+            numbers, strings, objects, arrays, and functions.
+    \endtable
+*/

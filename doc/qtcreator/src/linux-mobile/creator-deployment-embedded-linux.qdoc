@@ -1,0 +1,136 @@
+/****************************************************************************
+**
+** Copyright (C) 2022 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+// **********************************************************************
+// NOTE: the sections are not ordered by their logical order to avoid
+// reshuffling the file each time the index order changes (i.e., often).
+// Run the fixnavi.pl script to adjust the links to the index order.
+// **********************************************************************
+
+/*!
+    \page creator-deployment-embedded-linux.html
+    \previouspage creator-deployment-b2qt.html
+    \if defined(qtdesignstudio)
+    \nextpage creator-connecting-mobile.html
+    \else
+    \nextpage creator-deployment-qnx.html
+    \endif
+
+    \title Deploying Applications to Generic Remote Linux Devices
+
+    You can specify settings for deploying applications to generic remote
+    Linux devices in the project configuration file and in the
+    \uicontrol Projects mode, in \uicontrol {Run Settings}.
+
+    \image qtcreator-embedded-linux-deployment-details.png "Deploy to embedded Linux"
+
+    The files to be installed are listed in the \uicontrol {Deployment} step,
+    the \uicontrol {Files to deploy} field. The \uicontrol {Source File Path}
+    field displays the location of the file on the development PC. The
+    \uicontrol {Target Directory} field displays the directory where the file is
+    installed on the device. Text in red color indicates that the information is
+    missing.
+
+    If the build system did not automatically detect the source and target
+    directories, select \uicontrol {Override deployment data from build system},
+    and then select \uicontrol Add to enter them manually. To remove the
+    selected paths from \uicontrol {Files to deploy}, select \uicontrol Remove.
+
+    \section1 Adding Missing Files
+
+    The process to add files to deploy depends on the build system you use.
+    For more information, see \l{Specifying Project Contents}.
+
+    \section2 CMake Builds
+
+    When using CMake as the build system, use the \l{CMake: install command}
+    {install} command in the CMakeLists.txt file to add the missing files.
+
+    For example, add the following lines to the CMakeLists.txt file to install
+    the binary of your project to the \c /opt directory on the remote device:
+
+    \badcode
+    set(INSTALL_DESTDIR "/opt")
+
+    install(TARGETS <target>
+        RUNTIME DESTINATION "${INSTALL_DESTDIR}"
+        BUNDLE DESTINATION "${INSTALL_DESTDIR}"
+        LIBRARY DESTINATION "${INSTALL_DESTDIR}"
+    )
+    \endcode
+
+    \section2 qmake Builds
+
+    When using qmake, edit the \l{Variables#installs}{INSTALLS variable} in
+    the project \c .pro file.
+
+    When you run the application, \QC copies the necessary files to the device
+    and starts the application on it.
+
+    For example, add the following lines to the \c .pro file to copy the binary
+    of your project to the \c /opt directory on the remote device:
+
+    \code
+      target.path = /opt
+      INSTALLS += target
+    \endcode
+
+    To deploy additional files, add them to further targets that you also add
+    to \c INSTALLS.
+
+    \section1 Deploy Steps
+
+    When you run the application on the device, \QC first uploads the
+    necessary files to it, as specified by the deploy steps.
+
+    \section2 Uploading Files
+
+    By default, \QC copies the application files to the device by
+    using the SSH file transfer protocol (SFTP), as specified by
+    the \uicontrol {Upload files via SFTP} step.
+
+    \note If the SFTP upload fails, make sure that the remote device has SFTP
+    enabled in its SSH daemon. Some versions of Dropbear that come without SFTP
+    support will crash when an SFTP upload is being attempted. This is not a bug
+    in \QC.
+
+    If you have a lot of data to copy, select \uicontrol Details in the
+    \uicontrol {Upload Files via SFTP} step, and then select the
+    \uicontrol {Incremental deployment} check box. \QC takes note of the
+    deployment time and only copies files that have changed since the last
+    deployment. However, when you make major changes on the device, such as
+    removing files from the device manually or flashing a new disk image, or
+    when you use another device with the same IP address, deselect the check box
+    once, to have \QC deploy all files again.
+
+    \section2 Creating a Tarball
+
+    To only create a tarball and not copy the files to the device, select
+    \uicontrol {Add Deploy Step} > \uicontrol {Create tarball}. Then remove all
+    other deploy steps.
+
+    The \uicontrol {Deploy tarball via SFTP upload} step specifies that \QC
+    uploads the tarball to the device and extracts it.
+*/

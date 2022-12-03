@@ -1,0 +1,413 @@
+/****************************************************************************
+**
+** Copyright (C) 2022 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Design Studio documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \previouspage qtquick-form-editor.html
+    \page studio-3d-editor.html
+    \nextpage studio-material-editor.html
+
+    \title 3D Editor
+
+    When editing a 3D scene, you view the scene in the \uicontrol {3D Editor}
+    view. You can change the projection of the view by switching between
+    \e {perspective camera} and \e {orthographic camera} modes. When using the
+    perspective camera mode, components that are far from the camera appear
+    smaller than those nearby. In the orthographic camera mode, all components
+    appear at the same scale irrespective of their distance from the camera.
+    Both of them are free-form camera modes that you can use to orbit around
+    the scene.
+
+    When you import 3D scenes from files that you exported from 3D graphics
+    tools, you also import a \l{Cameras}{scene camera},
+    \l{Lights}{light}, \l{3D Models}{model}, and
+    \l {Materials and Shaders}{materials}. If your scene did not contain
+    them, you can add the corresponding \l {3D Components}{Qt Quick 3D}
+    components from \uicontrol Components > \inlineimage icons/plus.png
+    > \uicontrol {Qt Quick 3D} > \uicontrol {Qt Quick 3D}.
+
+    You can use the \l{Summary of the 3D Editor Toolbar Buttons}{toolbar buttons}
+    to \e transform 3D components and manipulate the 3D scene. Transformation
+    refers to moving, rotating, or scaling of a component. The \e pivot of the
+    component is used as the origin for transformations. You can set a
+    \l{Managing 3D Transformations}{local pivot offset} for a component in
+    \uicontrol Properties to transform the component around a point other than
+    its local origin. A line is drawn in \uicontrol {3D Editor} from the pivot
+    point to the center of the component to provide a visual connection between
+    them. Especially when working with complex scenes, it may be useful to use
+    the \l {Showing and Hiding Components}{showing and hiding} or the
+    \l {Locking Components}{locking} features in \l Navigator to avoid
+    transforming components by mistake while editing your scene.
+
+    Toggle between local and global orientation to determine whether the gizmos
+    affect only the local transformations of the component or whether they
+    transform with respect to the global space.
+
+    Another helpful feature when editing 3D scenes is the \e {edit light},
+    which is a quick way to light the scene.
+
+    Additionally, you can toggle the visibility of the grid, selection boxes,
+    icon gizmos, and camera frustums in the 3D scene.
+
+    To refresh the contents of \uicontrol {3D Editor}, press \key P or
+    select the \inlineimage icons/reset.png
+    (\uicontrol {Reset View}) button.
+
+    \image studio-3d-editor.png "3D Editor"
+
+    The following video illustrates navigating in \uicontrol {3D Editor} and
+    using the toolbar:
+
+    \youtube SsFWyUeAA_4
+
+    \section1 Controlling the 3D Editor Camera
+
+    To switch to perspective camera mode, select
+    \inlineimage perspective_camera.png
+    (\uicontrol {Toggle Perspective/Orthographic Edit Camera}).
+    To switch to orthographic camera mode, select
+    \inlineimage orthographic_camera.png
+    . You can also Toggle the camera mode by using the keyboard shortcut \key T.
+
+    You can navigate the scene by panning, rotating, and zooming the 3D Editor
+    camera:
+
+    \list
+        \li To pan, press \key Alt (or \key Option on \macos) and use the
+            middle mouse button to click and drag anywhere in the rendered
+            view to slide the view around.
+            \note It is not possible to pan using Magic Mouse.
+        \li To orbit, press \key Alt and click and drag anywhere in the rendered
+            view to rotate the view.
+        \li To zoom, use the mouse wheel or press \key Alt and right-click
+            anywhere in the rendered view to zoom the view in or out as you drag
+            up or down.
+    \endlist
+
+    To zoom and focus the 3D Editor camera on a selected component,
+    select \inlineimage fit_selected.png
+    (\uicontrol {Fit Selected}) or press \key F.
+
+    The world axis helper (1) shows the direction of the world axes in the view.
+    To point the camera at the currently selected component in the direction of
+    an axis, click the axis. Clicking the dot at the end of the axis will point
+    the camera at the opposite direction of the axis. If no component is
+    selected, the camera is pointed at the world origin. This does not affect
+    the camera zoom level.
+
+    \image studio-3d-editor-axis-helper.png "Axis helper in 3D Editor"
+
+    You can use scene cameras (2) to view the \uicontrol View3D component from a
+    specific angle in \l {Form Editor} while editing scenes. Different types of
+    cameras are available in \uicontrol Components
+    > \uicontrol {Qt Quick 3D} > \uicontrol {Qt Quick 3D}. For more information
+    about using cameras in the scene, the available camera types, and their
+    properties, see \l{Cameras}.
+
+    \section1 Using Global and Local Orientation
+
+    To switch between local and global orientation, select
+    \inlineimage local.png
+    or \inlineimage global.png
+    (\uicontrol {Toggle Local/Global Orientation})
+    or press \key Y.
+
+    In global orientation mode, transformation of a selected component is
+    presented with respect to the global space. For example, while the move tool
+    is selected, selecting a cube will show its move gizmo aligned with the axes
+    of global space. Dragging on the red arrow of the gizmo moves the component
+    in the global x direction.
+
+    In local orientation mode, the position of a selected component is shown
+    according to local axes specific to the selected component. For example,
+    selecting a rotated cube will show its axes rotated, and not aligned with
+    the axes of global space. Dragging on the red arrow of the gizmo moves the
+    component in the local x direction in relation to the component.
+
+    \section1 Using Edit Light
+
+    The edit light is an extra point light that can be used to illuminate the
+    scene. To toggle the edit light on and off, select \inlineimage edit_light_on.png
+    or \inlineimage edit_light_off.png
+    (\uicontrol {Toggle Edit Light})
+    or press \key U.
+
+    For more information about the available scene light types and their
+    properties, see \l{Lights}.
+
+    \section1 Selecting Components
+
+    To move, rotate, or scale components in the scene, you need to select them
+    first. The selection mode buttons determine how components are selected when
+    you click them in \uicontrol {3D Editor}:
+
+    \list
+        \li In the \inlineimage select_item.png
+            (\uicontrol {Single Selection}) mode, a single component is selected.
+        \li In the \inlineimage select_group.png
+            (\uicontrol {Group Selection}) mode, the top level parent of the
+            component is selected. This enables you to move, rotate, or scale a
+            group of components.
+    \endlist
+
+    To toggle the selection mode, press \key Q.
+
+    To multiselect, hold \key Ctrl and click the components you wish to select.
+
+    After selecting a component, you can apply the usual \l {Keyboard Shortcuts}
+    {keyboard shortcuts} applicable to your operating system, for example,
+    \key Ctrl+C and \key Ctrl+V on Windows to copy-paste components.
+
+    \target moving components 3d editor
+    \section1 Moving Components
+
+    \image studio-3d-editor-move.png "3D Editor in move mode"
+
+    You can move components in relation to their coordinate system, along the x,
+    y, or z axis or on the top, bottom, left, and right clip planes of the
+    \uicontrol {3D Editor} view.
+
+    To move components, select \inlineimage move_on.png
+    or press \key W:
+
+    \list
+        \li To move components along the axes of the move gizmo, click the axis,
+            and drag the component along the axis.
+        \li To move components on a plane, click the plane handle and drag the
+            component on the plane.
+        \li To move an component freely in 3D editor, click and drag the gray
+            handle at the center of the move gizmo.
+     \endlist
+
+    \section1 Rotating Components
+
+    \image studio-3d-editor-rotate.png "3D Editor in rotate mode"
+
+    To rotate components, select \inlineimage rotate_on.png
+    or press \key E:
+
+    \list
+        \li To rotate a component around its rotation gizmo, click the axis ring
+            and drag in the direction you want to rotate the component in.
+        \li To freely rotate the component, click and drag the inner center
+            circle of the gizmo.
+    \endlist
+
+    \section1 Scaling Components
+
+    \image studio-3d-editor-scale.png "3D Editor in scale mode"
+
+    You can use the scale handles to adjust the local x, y, or z scale of a
+    component. You can adjust the scale across one, two, or three axes,
+    depending on the handle.
+
+    To scale components, select \inlineimage scale_on.png
+    or press \key R:
+
+    \list
+        \li To adjust the scale across one axis, click and drag the scale handle
+            attached to the axis.
+        \li To adjust the scale across a plane, click the plane handle and drag
+            the component on the plane.
+        \li To uniformly scale a component across all axes, click and drag the
+            gray handle at the center of the component.
+    \endlist
+
+    \section1 Aligning Views and Cameras
+
+    To align a camera to the \uicontrol {3D Editor} view:
+    \list 1
+      \li Select a camera in \uicontrol {3D Editor} or \uicontrol {Navigator}.
+      \li In \uicontrol {3D Editor},
+      select \inlineimage icons/align-camera-on.png
+      .
+    \endlist
+
+    This moves and rotates the camera so that the camera shows the same view
+    as the current view in \uicontrol {3D Editor}.
+
+    To align the \uicontrol {3D Editor} view to a camera:
+        \list 1
+      \li Select a camera in \uicontrol {3D Editor} or \uicontrol {Navigator}.
+      \li In \uicontrol {3D Editor},
+      select \inlineimage icons/align-view-on.png
+      .
+    \endlist
+
+    This copies the position as well as x and y rotation values from the
+    camera and applies them to \uicontrol {3D Editor}.
+
+    \section1 Toggling Visibility
+
+    To toggle the visibility of objects in \uicontrol {3D Editor}, select
+    \inlineimage icons/visibilityon.png
+    in the toolbar. This opens a menu with the following options:
+
+    \table
+      \row
+        \li Show Grid
+        \li Toggles the visibility of the helper grid.
+      \row
+        \li Show Selection Boxes
+        \li Toggles the visibility of selection boxes for selected 3D objects.
+      \row
+        \li Show Icon Gizmos
+        \li Toggles the visibility of icon gizmos for object such as cameras,
+            lights, and particle systems.
+      \row
+        \li Always Show Camera Frustums
+        \li Toggles between always showing the camera frustum and showing it
+        only for cameras selected in \uicontrol {3D Editor}.
+      \row
+        \li Always Show Particle Emitters and Attractors
+        \li Toggle between always showing the particle emitter and attractor
+        visualizations and only showing them when the emitter or attractor is
+        selected in \uicontrol {3D Editor}.
+    \endtable
+
+    \section1 Particle Editor
+
+    The particle editor tools help you preview your particle systems in
+    \uicontrol {3D Editor}. You can select one particle system to preview at a
+    time.
+
+    To preview a particle system in \uicontrol{3D Editor}:
+
+    \list 1
+      \li Select a particle system in \uicontrol Navigator or
+      \uicontrol {3D Editor}.
+      \li In the \uicontrol {3D Editor}, select
+      \inlineimage icons/particle-animation-on.png
+      to activate particle animation. Now you can see the particle animation in
+      \uicontrol{3D Editor}.
+    \endlist
+
+    You can pause the particle animation by selecting
+    \inlineimage icons/particle-animation-on.png
+    . When the animation is paused, you can use
+    \inlineimage icons/particles-seek.png
+    to manually seek forward or backward in the particle animation.
+
+    \section1 Summary of the 3D Editor Toolbar Buttons
+
+    The \uicontrol {3D Editor} toolbar contains the following buttons:
+
+    \table
+    \header
+        \li Button
+        \li Tooltip
+        \li Keyboard Shortcut
+        \li Read More
+    \row
+        \li \inlineimage select_group.png
+            \inlineimage select_item.png
+        \li Toggle Group/Single Selection Mode
+        \li \key Q
+        \li \l{Selecting Components}
+    \row
+        \li \inlineimage move_off.png
+            \inlineimage move_on.png
+        \li Activate the Move Tool
+        \li \key W
+        \li \l{moving components 3d editor}{Moving Components}
+    \row
+        \li \inlineimage rotate_off.png
+            \inlineimage rotate_on.png
+        \li Activate Rotate Tool
+        \li \key E
+        \li \l{Rotating Components}
+    \row
+        \li \inlineimage scale_off.png
+            \inlineimage scale_on.png
+        \li Activate Scale Tool
+        \li \key R
+        \li \l{Scaling Components}
+    \row
+        \li \inlineimage fit_selected.png
+        \li Fit Selected Object to View
+        \li \key F
+        \li \l{Controlling the 3D Editor Camera}
+    \row
+        \li  \inlineimage perspective_camera.png
+             \inlineimage orthographic_camera.png
+        \li Toggle Perspective/Orthographic Edit Camera
+        \li \key T
+        \li \l{Controlling the 3D Editor Camera}
+    \row
+        \li \inlineimage global.png
+            \inlineimage local.png
+        \li Toggle Global/Local Orientation
+        \li \key Y
+        \li \l{Using Global and Local Orientation}
+    \row
+        \li \inlineimage edit_light_off.png
+            \inlineimage edit_light_on.png
+        \li Toggle Edit Light On/Off
+        \li \key U
+        \li \l{Using Edit Light}
+    \row
+        \li \inlineimage icons/align-camera-on.png
+        \li Align Selected Cameras to View
+        \li
+        \li\l{Aligning Views and Cameras}
+    \row
+        \li \inlineimage icons/align-view-on.png
+        \li Align View to Selected Camera
+        \li
+        \li \l{Aligning Views and Cameras}
+    \row
+        \li \inlineimage icons/visibilityon.png
+        \li Visibility Toggles
+        \li
+        \li \l{Toggling Visibility}
+    \row
+        \li \inlineimage icons/particles-seek.png
+        \li Seek Particle System Time
+        \li
+        \li \l{Particle Editor}
+    \row
+        \li \inlineimage icons/particle-animation-on.png
+            \inlineimage icons/particle-animation-off.png
+        \li Toggle Particle Animation
+        \li \key V
+        \li \l{Particle Editor}
+    \row
+        \li \inlineimage icons/particle-play.png
+            \inlineimage icons/particle-pause.png
+        \li Play/Pause Particles
+        \li \key ,
+        \li \l{Particle Editor}
+    \row
+        \li \inlineimage icons/particle-restart.png
+        \li Restart Particles
+        \li \key /
+        \li \l{Particle Editor}
+    \row
+        \li \inlineimage icons/reset.png
+        \li Reset View
+        \li \key P
+        \li
+    \endtable
+
+*/

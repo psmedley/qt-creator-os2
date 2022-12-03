@@ -1,0 +1,171 @@
+/****************************************************************************
+**
+** Copyright (C) 2022 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/index.html
+    \title Qt for MCUs
+*/
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/qtul-qmltypes.html
+    \title Qt for MCUs - All QML Types
+*/
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/qtul-supported-platforms.html
+    \title Qt for MCUs - Supported Target Platforms
+*/
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/qtul-getting-started-renesas.html
+    \title Getting Started on Renesas
+*/
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/qtul-getting-started-on-stm.html
+    \title Getting Started on STM
+*/
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/qtul-getting-started-on-nxp.html
+    \title Getting Started on NXP
+*/
+/*!
+    \externalpage https://doc.qt.io/QtForMCUs/qtul-getting-started-windows.html
+    \title Getting Started on Windows
+*/
+/*!
+    \externalpage https://adoptopenjdk.net/
+    \title AdoptOpenJDK
+*/
+/*!
+    \externalpage http://openjdk.java.net
+    \title OpenJDK
+*/
+/*!
+    \externalpage http://developer.android.com/sdk/index.html
+    \title Android SDK Command-line Tools
+*/
+/*!
+    \externalpage https://developer.android.com/studio/command-line/avdmanager.html
+    \title avdmanager
+*/
+/*!
+    \externalpage http://developer.android.com/tools/sdk/ndk/index.html
+    \title Android NDK
+*/
+/*!
+    \externalpage https://developer.android.com/studio/debug/dev-options
+    \title Configure on-device developer options
+*/
+/*!
+    \externalpage https://developer.android.com/studio/command-line/sdkmanager.html
+    \title sdkmanager
+*/
+/*!
+    \externalpage https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/android/sdk_definitions.json
+    \title sdk_definitions.json
+*/
+/*!
+    \externalpage https://developer.android.com/studio/run/emulator-commandline
+    \title Start the emulator from the command line
+*/
+/*!
+    \externalpage https://marketplace.qt.io/products/android-openssl-support
+    \title Android OpenSSL support
+*/
+/*!
+    \externalpage http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels
+    \title What is API Level?
+*/
+/*!
+    \externalpage http://developer.android.com/guide/components/fundamentals.html
+    \title Android Application Fundamentals
+*/
+/*!
+    \externalpage https://doc.qt.io/qt/qtquicktest-index.html#executing-c-before-qml-tests
+    \title Executing C++ Before QML Tests
+*/
+/*!
+    \externalpage https://doc.qt.io/qt/qtqml-cppintegration-overview.html
+    \title Overview - QML and C++ Integration
+*/
+/*!
+    \externalpage https://doc.qt.io/qt/qtqml-syntax-imports.html#qml-import-path
+    \title QML Import Path
+*/
+/*!
+    \externalpage https://doc.qt.io/QtApplicationManager/
+    \title Qt Application Manager
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/manual/cmake.1.html
+    \title CMake: cmake(1)
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html
+    \title CMake: cmake-variables(7)
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/command/install.html
+    \title CMake: install command
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/command/set_property.html
+    \title CMake: set_property command
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/command/target_compile_definitions.html
+    \title CMake: target_compile_definitions command
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/command/target_link_libraries.html
+    \title CMake: target_link_libraries command
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/command/target_sources.html
+    \title CMake: target_sources command
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/variable/CMAKE_OSX_DEPLOYMENT_TARGET.html
+    \title CMake: CMAKE_OSX_DEPLOYMENT_TARGET
+*/
+/*!
+    \externalpage https://cmake.org/cmake/help/latest/prop_sf/HEADER_FILE_ONLY.html
+    \title CMake: HEADER_FILE_ONLY
+*/
+/*!
+    \externalpage https://microsoft.github.io/language-server-protocol/
+    \title Language Server Protocol
+*/
+/*!
+    \externalpage https://docs.microsoft.com/en-us/java/openjdk/download
+    \title Download OpenJDK
+*/
+/*!
+    \externalpage https://developer.android.com/studio
+    \title Download Android Studio
+*/
+/*!
+    \externalpage https://developer.android.com/studio/install
+    \title Android Studio Installation Guide
+*/

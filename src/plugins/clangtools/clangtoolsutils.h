@@ -1,0 +1,92 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qt Creator.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU
+** General Public License version 3 as published by the Free Software
+** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
+** included in the packaging of this file. Please review the following
+** information to ensure the GNU General Public License requirements will
+** be met: https://www.gnu.org/licenses/gpl-3.0.html.
+**
+****************************************************************************/
+
+#pragma once
+
+#include <cppeditor/clangdiagnosticconfig.h>
+
+#include <utils/id.h>
+#include <utils/optional.h>
+
+#include <QtGlobal>
+
+namespace CppEditor { class ClangDiagnosticConfigsModel; }
+namespace Debugger { class DiagnosticLocation; }
+namespace Utils { class FilePath; }
+
+namespace ClangTools {
+namespace Internal {
+
+QString clangTidyDocUrl(const QString &check);
+QString clazyDocUrl(const QString &check);
+
+class Diagnostic;
+
+enum class FixitStatus {
+    NotAvailable,
+    NotScheduled,
+    Scheduled,
+    Applied,
+    FailedToApply,
+    Invalidated,
+};
+
+QString createDiagnosticToolTipString(
+    const Diagnostic &diagnostic,
+    Utils::optional<FixitStatus> status = Utils::nullopt,
+    bool showSteps = true);
+
+CppEditor::ClangDiagnosticConfig builtinConfig();
+
+QString createFullLocationString(const Debugger::DiagnosticLocation &location);
+
+QString hintAboutBuildBeforeAnalysis();
+void showHintAboutBuildBeforeAnalysis();
+
+Utils::FilePath shippedClazyStandaloneExecutable();
+Utils::FilePath clazyStandaloneExecutable();
+Utils::FilePath clazyStandaloneFallbackExecutable();
+
+Utils::FilePath shippedClangTidyExecutable();
+Utils::FilePath clangTidyExecutable();
+Utils::FilePath clangTidyFallbackExecutable();
+
+Utils::FilePath fullPath(const Utils::FilePath &executable);
+
+QString documentationUrl(const QString &checkName);
+
+CppEditor::ClangDiagnosticConfigsModel diagnosticConfigsModel();
+CppEditor::ClangDiagnosticConfigsModel diagnosticConfigsModel(
+    const CppEditor::ClangDiagnosticConfigs &customConfigs);
+
+CppEditor::ClangDiagnosticConfig diagnosticConfig(const Utils::Id &diagConfigId);
+
+QStringList extraClangToolsPrependOptions();
+QStringList extraClangToolsAppendOptions();
+
+inline Utils::Id taskCategory() { return "ClangTools"; }
+
+} // namespace Internal
+} // namespace ClangTools

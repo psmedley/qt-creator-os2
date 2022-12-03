@@ -1,0 +1,73 @@
+project     = qtcreator
+description = "$IDE_DISPLAY_NAME Manual"
+url         = http://doc.qt.io/$IDE_ID
+
+#Words to ignore for auto-linking
+ignorewords += \
+    Boot2Qt \
+    macOS \
+    WebChannel \
+    WebSocket \
+    WebSockets \
+    OpenGL \
+    MinGW
+
+headerdirs =
+sourcedirs = ../src
+
+imagedirs = ../images
+
+exampledirs = ../examples
+examples.fileextensions += *.qml *.svg
+
+include(../../qtcreator/images/extraimages/qtcreator-extraimages.qdocconf)
+
+depends +=    qtwidgets \
+              qtcmake \
+              qtcore \
+              qtqml \
+              qtquick \
+              qmake \
+              qtdesigner \
+              qtdoc \
+              qtgui \
+              qthelp \
+              qtquicktimeline \
+              qtlinguist \
+              qtscxml \
+              qtsensors \
+              qttestlib \
+              qtuitools \
+              qtxml \
+              qtvirtualkeyboard
+
+include(../../config/macros.qdocconf)
+include(../../config/qt-cpp-ignore.qdocconf)
+include(../../config/qt-defines.qdocconf)
+
+defines += qtcreator
+
+sources.fileextensions         = "*.qdoc"
+
+qhp.projects            = QtCreator
+qhp.QtCreator.file             = qtcreator.qhp
+qhp.QtCreator.namespace        = org.qt-project.qtcreator.$QTC_VERSION_TAG
+qhp.QtCreator.virtualFolder    = doc
+qhp.QtCreator.indexTitle       = $IDE_DISPLAY_NAME Manual $QTC_VERSION
+qhp.QtCreator.filterAttributes = $IDE_ID $QTC_VERSION
+qhp.QtCreator.customFilters.QtCreator.name = $IDE_DISPLAY_NAME $QTC_VERSION
+qhp.QtCreator.customFilters.QtCreator.filterAttributes = $IDE_ID $QTC_VERSION
+qhp.QtCreator.indexRoot        =
+
+qhp.QtCreator.subprojects = manual
+qhp.QtCreator.subprojects.manual.title = $IDE_DISPLAY_NAME Manual
+qhp.QtCreator.subprojects.manual.indexTitle = All Topics
+qhp.QtCreator.subprojects.manual.type = manual
+
+# Doxygen compatibility commands
+
+macro.see                       = "\\sa"
+macro.function                  = "\\fn"
+
+navigation.landingpage = "$IDE_DISPLAY_NAME Manual"
+buildversion = "$IDE_DISPLAY_NAME Manual $QTC_VERSION"
