@@ -242,7 +242,7 @@ extend_qtc_library(Utils CONDITION APPLE
     ${FWFoundation} ${FWAppKit}
 )
 
-extend_qtc_library(Utils CONDITION UNIX AND NOT APPLE
+extend_qtc_library(Utils CONDITION (UNIX OR OS2) AND NOT APPLE
   SOURCES
     touchbar/touchbar.cpp
 )

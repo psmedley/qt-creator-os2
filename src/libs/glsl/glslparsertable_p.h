@@ -47,6 +47,9 @@
 #define GLSLPARSERTABLE_P_H
 
 #include <QtCore/qglobal.h>
+#ifdef __OS2__
+#undef T_RESERVED
+#endif
 
 QT_BEGIN_NAMESPACE
 

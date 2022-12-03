@@ -54,7 +54,7 @@
 
 #include <algorithm>
 
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_UNIXLIKE
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>
@@ -74,7 +74,11 @@
 #define QT_PCLOSE _pclose
 #else
 #define QT_POPEN popen
+#ifndef __OS2__
 #define QT_POPEN_READ "r"
+#else
+#define QT_POPEN_READ "rb"
+#endif
 #define QT_PCLOSE pclose
 #endif
 

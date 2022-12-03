@@ -27,7 +27,7 @@
 
 #include "qtcprocess.h"
 
-#if defined(Q_OS_UNIX)
+#if defined(Q_OS_UNIXLIKE)
 #include <QDir>
 #include <signal.h>
 #include <errno.h>
@@ -51,7 +51,7 @@ bool ProcessInfo::operator<(const ProcessInfo &other) const
     return commandLine < other.commandLine;
 }
 
-#if defined(Q_OS_UNIX)
+#if defined(Q_OS_UNIXLIKE)
 
 static bool isUnixProcessId(const QString &procname)
 {
