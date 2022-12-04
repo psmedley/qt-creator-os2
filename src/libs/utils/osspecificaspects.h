@@ -34,21 +34,21 @@
 namespace Utils {
 
 // Add more as needed.
-enum OsType { OsTypeWindows, OsTypeLinux, OsTypeMac, OsTypeOtherUnix, OsTypeOther };
+enum OsType { OsTypeWindows, OsTypeLinux, OsTypeMac, OsTypeOtherUnix, OsTypeOS2, OsTypeOther };
 
 namespace OsSpecificAspects {
 
 inline QString withExecutableSuffix(OsType osType, const QString &executable)
 {
     QString finalName = executable;
-    if (osType == OsTypeWindows && !finalName.endsWith(QTC_WIN_EXE_SUFFIX))
+    if ((osType == OsTypeWindows || osType == OsTypeOS2) && !finalName.endsWith(QTC_WIN_EXE_SUFFIX))
         finalName += QLatin1String(QTC_WIN_EXE_SUFFIX);
     return finalName;
 }
 
 inline Qt::CaseSensitivity fileNameCaseSensitivity(OsType osType)
 {
-    return osType == OsTypeWindows || osType == OsTypeMac ? Qt::CaseInsensitive : Qt::CaseSensitive;
+    return osType == OsTypeWindows || osType == OsTypeMac || osType == OsTypeOS2 ? Qt::CaseInsensitive : Qt::CaseSensitive;
 }
 
 inline Qt::CaseSensitivity envVarCaseSensitivity(OsType osType)
@@ -58,7 +58,7 @@ inline Qt::CaseSensitivity envVarCaseSensitivity(OsType osType)
 
 inline QChar pathListSeparator(OsType osType)
 {
-    return QLatin1Char(osType == OsTypeWindows ? ';' : ':');
+    return QLatin1Char(osType == OsTypeWindows || osType == OsTypeOS2 ? ';' : ':');
 }
 
 inline Qt::KeyboardModifier controlModifier(OsType osType)

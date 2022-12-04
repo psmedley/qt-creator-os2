@@ -36,6 +36,8 @@ QT_END_NAMESPACE
 
 #ifdef Q_OS_WIN
 #define QTC_HOST_EXE_SUFFIX QTC_WIN_EXE_SUFFIX
+#elif defined(Q_OS_OS2)
+#define QTC_HOST_EXE_SUFFIX ".exe"
 #else
 #define QTC_HOST_EXE_SUFFIX ""
 #endif // Q_OS_WIN
@@ -53,6 +55,8 @@ public:
         return OsTypeLinux;
 #elif defined(Q_OS_MAC)
         return OsTypeMac;
+#elif defined(Q_OS_OS2)
+        return OsTypeOS2;
 #elif defined(Q_OS_UNIX)
         return OsTypeOtherUnix;
 #else

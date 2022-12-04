@@ -1013,6 +1013,19 @@ static QString qt_GetLongPathName(const QString &strShortPath)
     } else {
         return QDir::fromNativeSeparators(strShortPath);
     }
+#elif defined(Q_OS_OS2)
+    if (strShortPath.isEmpty()
+        || strShortPath == QLatin1String(".") || strShortPath == QLatin1String(".."))
+        return strShortPath;
+    if (strShortPath.length() == 2 && strShortPath.endsWith(QLatin1Char(':')))
+        return strShortPath.toUpper();
+    const QString absPath = QDir(strShortPath).absolutePath();
+    if (absPath.startsWith(QLatin1String("//"))
+        || absPath.startsWith(QLatin1String("\\\\"))) // unc
+        return QDir::fromNativeSeparators(absPath);
+    if (absPath.startsWith(QLatin1Char('/')))
+        return QString();
+    return strShortPath;
 #else
     return strShortPath;
 #endif
@@ -1039,7 +1052,7 @@ FileSystemNode *FileSystemModelPrivate::node(const QString &path, bool fetch) co
     // ### TODO can we use bool QAbstractFileEngine::caseSensitive() const?
     QStringList pathElements = absolutePath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     if ((pathElements.isEmpty())
-#if !defined(Q_OS_WIN)
+#if !defined(Q_OS_WIN) && !defined(Q_OS_OS2)
         && QDir::fromNativeSeparators(longPath) != QLatin1String("/")
 #endif
         )
