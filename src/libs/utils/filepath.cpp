@@ -357,7 +357,7 @@ static bool isRelativePathHelper(const QString &path, OsType osType)
 {
     if (path.startsWith('/'))
         return false;
-    if (osType == OsType::OsTypeWindows) {
+    if (osType == OsType::OsTypeWindows || osType == OsType::OsTypeOS2) {
         if (path.startsWith('\\'))
             return false;
         // Unlike QFileInfo, this won't accept a relative path with a drive letter.
