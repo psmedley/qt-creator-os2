@@ -72,8 +72,12 @@ private:
 
 static QString launcherSocketName()
 {
+#ifndef Q_OS_OS2
     return TemporaryDirectory::masterDirectoryPath()
            + QStringLiteral("/launcher-%1").arg(QString::number(qApp->applicationPid()));
+#else
+    return QStringLiteral("lau-%1").arg(QString::number(qApp->applicationPid()));
+#endif
 }
 
 class LauncherInterfacePrivate : public QObject
