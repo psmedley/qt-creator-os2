@@ -43,6 +43,11 @@
 #ifdef PROEVALUATOR_THREAD_SAFE
 # include <qthreadpool.h>
 #endif
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
 
 #ifdef Q_OS_UNIXLIKE
 #include <unistd.h>
@@ -68,14 +73,14 @@ using namespace QMakeInternal; // for IoUtils
 
 #define fL1S(s) QString::fromLatin1(s)
 
-QMakeGlobals::QMakeGlobals()
+DllExport QMakeGlobals::QMakeGlobals()
 {
     do_cache = true;
 
 #ifdef PROEVALUATOR_DEBUG
     debugLevel = 0;
 #endif
-#ifdef Q_OS_WIN
+#ifdef Q_OS_DOSLIKE
     dirlist_sep = QLatin1Char(';');
     dir_sep = QLatin1Char('\\');
 #else
@@ -84,19 +89,19 @@ QMakeGlobals::QMakeGlobals()
 #endif
 }
 
-QMakeGlobals::~QMakeGlobals()
+DllExport QMakeGlobals::~QMakeGlobals()
 {
     qDeleteAll(baseEnvs);
 }
 
-void QMakeGlobals::killProcesses()
+DllExport void QMakeGlobals::killProcesses()
 {
 #ifdef PROEVALUATOR_THREAD_SAFE
     canceled = true;
 #endif
 }
 
-QString QMakeGlobals::cleanSpec(QMakeCmdLineParserState &state, const QString &spec)
+DllExport QString QMakeGlobals::cleanSpec(QMakeCmdLineParserState &state, const QString &spec)
 {
     QString ret = QDir::cleanPath(spec);
     if (ret.contains(QLatin1Char('/'))) {
@@ -107,7 +112,7 @@ QString QMakeGlobals::cleanSpec(QMakeCmdLineParserState &state, const QString &s
     return ret;
 }
 
-QMakeGlobals::ArgumentReturn QMakeGlobals::addCommandLineArguments(
+DllExport QMakeGlobals::ArgumentReturn QMakeGlobals::addCommandLineArguments(
         QMakeCmdLineParserState &state, QStringList &args, int *pos)
 {
     enum { ArgNone, ArgConfig, ArgSpec, ArgXSpec, ArgTmpl, ArgTmplPfx, ArgCache, ArgQtConf } argState = ArgNone;
@@ -186,7 +191,7 @@ QMakeGlobals::ArgumentReturn QMakeGlobals::addCommandLineArguments(
     return ArgumentsOk;
 }
 
-void QMakeGlobals::commitCommandLineArguments(QMakeCmdLineParserState &state)
+DllExport void QMakeGlobals::commitCommandLineArguments(QMakeCmdLineParserState &state)
 {
     if (!state.extraargs.isEmpty()) {
         QString extra = fL1S("QMAKE_EXTRA_ARGS =");
@@ -204,7 +209,7 @@ void QMakeGlobals::commitCommandLineArguments(QMakeCmdLineParserState &state)
         xqmakespec = qmakespec;
 }
 
-void QMakeGlobals::useEnvironment()
+DllExport void QMakeGlobals::useEnvironment()
 {
     if (xqmakespec.isEmpty())
         xqmakespec = getEnv(QLatin1String("XQMAKESPEC"));
@@ -215,7 +220,7 @@ void QMakeGlobals::useEnvironment()
     }
 }
 
-void QMakeGlobals::setCommandLineArguments(const QString &pwd, const QStringList &_args)
+DllExport void QMakeGlobals::setCommandLineArguments(const QString &pwd, const QStringList &_args)
 {
     QStringList args = _args;
 
@@ -226,7 +231,7 @@ void QMakeGlobals::setCommandLineArguments(const QString &pwd, const QStringList
     useEnvironment();
 }
 
-void QMakeGlobals::setDirectories(const QString &input_dir, const QString &output_dir)
+DllExport void QMakeGlobals::setDirectories(const QString &input_dir, const QString &output_dir)
 {
     if (input_dir != output_dir && !output_dir.isEmpty()) {
         QString srcpath = input_dir;
@@ -247,7 +252,7 @@ void QMakeGlobals::setDirectories(const QString &input_dir, const QString &outpu
     }
 }
 
-QString QMakeGlobals::shadowedPath(const QString &fileName) const
+DllExport QString QMakeGlobals::shadowedPath(const QString &fileName) const
 {
     if (source_root.isEmpty())
         return fileName;
@@ -259,7 +264,7 @@ QString QMakeGlobals::shadowedPath(const QString &fileName) const
     return QString();
 }
 
-QStringList QMakeGlobals::splitPathList(const QString &val) const
+DllExport QStringList QMakeGlobals::splitPathList(const QString &val) const
 {
     QStringList ret;
     if (!val.isEmpty()) {
@@ -272,7 +277,7 @@ QStringList QMakeGlobals::splitPathList(const QString &val) const
     return ret;
 }
 
-QString QMakeGlobals::getEnv(const QString &var) const
+DllExport QString QMakeGlobals::getEnv(const QString &var) const
 {
 #ifdef PROEVALUATOR_SETENV
     return environment.value(var);
@@ -281,12 +286,12 @@ QString QMakeGlobals::getEnv(const QString &var) const
 #endif
 }
 
-QStringList QMakeGlobals::getPathListEnv(const QString &var) const
+DllExport QStringList QMakeGlobals::getPathListEnv(const QString &var) const
 {
     return splitPathList(getEnv(var));
 }
 
-QString QMakeGlobals::expandEnvVars(const QString &str) const
+DllExport QString QMakeGlobals::expandEnvVars(const QString &str) const
 {
     QString string = str;
     int startIndex = 0;
@@ -312,7 +317,7 @@ QString QMakeGlobals::expandEnvVars(const QString &str) const
 
 #ifndef QT_BUILD_QMAKE
 #ifdef PROEVALUATOR_INIT_PROPS
-bool QMakeGlobals::initProperties()
+DllExport bool QMakeGlobals::initProperties()
 {
     QByteArray data;
 #ifndef QT_BOOTSTRAPPED
@@ -335,7 +340,7 @@ bool QMakeGlobals::initProperties()
 }
 #endif
 
-void QMakeGlobals::parseProperties(const QByteArray &data, QHash<ProKey, ProString> &properties)
+DllExport void QMakeGlobals::parseProperties(const QByteArray &data, QHash<ProKey, ProString> &properties)
 {
     const auto lines = data.split('\n');
     for (QByteArray line : lines) {

@@ -9,28 +9,33 @@
 #include "yaml-cpp/node/detail/node_iterator.h"
 #include "yaml-cpp/node/ptr.h"
 #include "yaml-cpp/node/type.h"
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
 
 namespace YAML {
 namespace detail {
 
 std::string node_data::empty_scalar;
 
-node_data::node_data()
+DllExport node_data::node_data()
     : m_isDefined(false),
       m_mark(Mark::null_mark()),
       m_type(NodeType::Null),
       m_style(EmitterStyle::Default),
       m_seqSize(0) {}
 
-void node_data::mark_defined() {
+DllExport void node_data::mark_defined() {
   if (m_type == NodeType::Undefined)
     m_type = NodeType::Null;
   m_isDefined = true;
 }
 
-void node_data::set_mark(const Mark& mark) { m_mark = mark; }
+DllExport void node_data::set_mark(const Mark& mark) { m_mark = mark; }
 
-void node_data::set_type(NodeType::value type) {
+DllExport void node_data::set_type(NodeType::value type) {
   if (type == NodeType::Undefined) {
     m_type = type;
     m_isDefined = false;
@@ -61,23 +66,23 @@ void node_data::set_type(NodeType::value type) {
   }
 }
 
-void node_data::set_tag(const std::string& tag) { m_tag = tag; }
+DllExport void node_data::set_tag(const std::string& tag) { m_tag = tag; }
 
-void node_data::set_style(EmitterStyle::value style) { m_style = style; }
+DllExport void node_data::set_style(EmitterStyle::value style) { m_style = style; }
 
-void node_data::set_null() {
+DllExport void node_data::set_null() {
   m_isDefined = true;
   m_type = NodeType::Null;
 }
 
-void node_data::set_scalar(const std::string& scalar) {
+DllExport void node_data::set_scalar(const std::string& scalar) {
   m_isDefined = true;
   m_type = NodeType::Scalar;
   m_scalar = scalar;
 }
 
 // size/iterator
-std::size_t node_data::size() const {
+DllExport std::size_t node_data::size() const {
   if (!m_isDefined)
     return 0;
 
@@ -94,12 +99,12 @@ std::size_t node_data::size() const {
   return 0;
 }
 
-void node_data::compute_seq_size() const {
+DllExport void node_data::compute_seq_size() const {
   while (m_seqSize < m_sequence.size() && m_sequence[m_seqSize]->is_defined())
     m_seqSize++;
 }
 
-void node_data::compute_map_size() const {
+DllExport void node_data::compute_map_size() const {
   kv_pairs::iterator it = m_undefinedPairs.begin();
   while (it != m_undefinedPairs.end()) {
     kv_pairs::iterator jt = std::next(it);
@@ -109,7 +114,7 @@ void node_data::compute_map_size() const {
   }
 }
 
-const_node_iterator node_data::begin() const {
+DllExport const_node_iterator node_data::begin() const {
   if (!m_isDefined)
     return const_node_iterator();
 
@@ -123,7 +128,7 @@ const_node_iterator node_data::begin() const {
   }
 }
 
-node_iterator node_data::begin() {
+DllExport node_iterator node_data::begin() {
   if (!m_isDefined)
     return node_iterator();
 
@@ -137,7 +142,7 @@ node_iterator node_data::begin() {
   }
 }
 
-const_node_iterator node_data::end() const {
+DllExport const_node_iterator node_data::end() const {
   if (!m_isDefined)
     return const_node_iterator();
 
@@ -151,7 +156,7 @@ const_node_iterator node_data::end() const {
   }
 }
 
-node_iterator node_data::end() {
+DllExport node_iterator node_data::end() {
   if (!m_isDefined)
     return node_iterator();
 
@@ -166,7 +171,7 @@ node_iterator node_data::end() {
 }
 
 // sequence
-void node_data::push_back(node& node, shared_memory_holder /* pMemory */) {
+DllExport void node_data::push_back(node& node, shared_memory_holder /* pMemory */) {
   if (m_type == NodeType::Undefined || m_type == NodeType::Null) {
     m_type = NodeType::Sequence;
     reset_sequence();
@@ -178,7 +183,7 @@ void node_data::push_back(node& node, shared_memory_holder /* pMemory */) {
   m_sequence.push_back(&node);
 }
 
-void node_data::insert(node& key, node& value, shared_memory_holder pMemory) {
+DllExport void node_data::insert(node& key, node& value, shared_memory_holder pMemory) {
   switch (m_type) {
     case NodeType::Map:
       break;
@@ -195,7 +200,7 @@ void node_data::insert(node& key, node& value, shared_memory_holder pMemory) {
 }
 
 // indexing
-node* node_data::get(node& key, shared_memory_holder /* pMemory */) const {
+DllExport node* node_data::get(node& key, shared_memory_holder /* pMemory */) const {
   if (m_type != NodeType::Map) {
     return NULL;
   }
@@ -208,7 +213,7 @@ node* node_data::get(node& key, shared_memory_holder /* pMemory */) const {
   return NULL;
 }
 
-node& node_data::get(node& key, shared_memory_holder pMemory) {
+DllExport node& node_data::get(node& key, shared_memory_holder pMemory) {
   switch (m_type) {
     case NodeType::Map:
       break;
@@ -231,7 +236,7 @@ node& node_data::get(node& key, shared_memory_holder pMemory) {
   return value;
 }
 
-bool node_data::remove(node& key, shared_memory_holder /* pMemory */) {
+DllExport bool node_data::remove(node& key, shared_memory_holder /* pMemory */) {
   if (m_type != NodeType::Map)
     return false;
 
@@ -245,24 +250,24 @@ bool node_data::remove(node& key, shared_memory_holder /* pMemory */) {
   return false;
 }
 
-void node_data::reset_sequence() {
+DllExport void node_data::reset_sequence() {
   m_sequence.clear();
   m_seqSize = 0;
 }
 
-void node_data::reset_map() {
+DllExport void node_data::reset_map() {
   m_map.clear();
   m_undefinedPairs.clear();
 }
 
-void node_data::insert_map_pair(node& key, node& value) {
+DllExport void node_data::insert_map_pair(node& key, node& value) {
   m_map.emplace_back(&key, &value);
 
   if (!key.is_defined() || !value.is_defined())
     m_undefinedPairs.emplace_back(&key, &value);
 }
 
-void node_data::convert_to_map(shared_memory_holder pMemory) {
+DllExport void node_data::convert_to_map(shared_memory_holder pMemory) {
   switch (m_type) {
     case NodeType::Undefined:
     case NodeType::Null:
@@ -280,7 +285,7 @@ void node_data::convert_to_map(shared_memory_holder pMemory) {
   }
 }
 
-void node_data::convert_sequence_to_map(shared_memory_holder pMemory) {
+DllExport void node_data::convert_sequence_to_map(shared_memory_holder pMemory) {
   assert(m_type == NodeType::Sequence);
 
   reset_map();

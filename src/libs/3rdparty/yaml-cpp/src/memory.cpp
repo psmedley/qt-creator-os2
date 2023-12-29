@@ -2,10 +2,16 @@
 #include "yaml-cpp/node/detail/node.h"  // IWYU pragma: keep
 #include "yaml-cpp/node/ptr.h"
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 namespace YAML {
 namespace detail {
 
-void memory_holder::merge(memory_holder& rhs) {
+DllExport void memory_holder::merge(memory_holder& rhs) {
   if (m_pMemory == rhs.m_pMemory)
     return;
 
@@ -13,13 +19,13 @@ void memory_holder::merge(memory_holder& rhs) {
   rhs.m_pMemory = m_pMemory;
 }
 
-node& memory::create_node() {
+DllExport node& memory::create_node() {
   shared_node pNode(new node);
   m_nodes.insert(pNode);
   return *pNode;
 }
 
-void memory::merge(const memory& rhs) {
+DllExport void memory::merge(const memory& rhs) {
   m_nodes.insert(rhs.m_nodes.begin(), rhs.m_nodes.end());
 }
 }

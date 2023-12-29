@@ -31,33 +31,39 @@
 
 #include <QDir>
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 using namespace QMakeInternal;
 
 QT_BEGIN_NAMESPACE
 
-void ProFileEvaluator::initialize()
+DllExport void ProFileEvaluator::initialize()
 {
     QMakeEvaluator::initStatics();
 }
 
-ProFileEvaluator::ProFileEvaluator(QMakeGlobals *option, QMakeParser *parser, QMakeVfs *vfs,
+DllExport ProFileEvaluator::ProFileEvaluator(QMakeGlobals *option, QMakeParser *parser, QMakeVfs *vfs,
                                    QMakeHandler *handler)
   : d(new QMakeEvaluator(option, parser, vfs, handler)),
     m_vfs(vfs)
 {
 }
 
-ProFileEvaluator::~ProFileEvaluator()
+DllExport ProFileEvaluator::~ProFileEvaluator()
 {
     delete d;
 }
 
-bool ProFileEvaluator::contains(const QString &variableName) const
+DllExport bool ProFileEvaluator::contains(const QString &variableName) const
 {
     return d->m_valuemapStack.top().contains(ProKey(variableName));
 }
 
-QString ProFileEvaluator::value(const QString &variable) const
+DllExport QString ProFileEvaluator::value(const QString &variable) const
 {
     const QStringList &vals = values(variable);
     if (!vals.isEmpty())
@@ -66,7 +72,7 @@ QString ProFileEvaluator::value(const QString &variable) const
     return QString();
 }
 
-QStringList ProFileEvaluator::values(const QString &variableName) const
+DllExport QStringList ProFileEvaluator::values(const QString &variableName) const
 {
     const ProStringList &values = d->values(ProKey(variableName));
     QStringList ret;
@@ -79,7 +85,7 @@ QStringList ProFileEvaluator::values(const QString &variableName) const
     return ret;
 }
 
-QVector<ProFileEvaluator::SourceFile> ProFileEvaluator::fixifiedValues(
+DllExport QVector<ProFileEvaluator::SourceFile> ProFileEvaluator::fixifiedValues(
         const QString &variable, const QString &baseDirectory, const QString &buildDirectory,
         bool expandWildcards) const
 {
@@ -118,7 +124,7 @@ QVector<ProFileEvaluator::SourceFile> ProFileEvaluator::fixifiedValues(
     return result;
 }
 
-QStringList ProFileEvaluator::sourcesToFiles(const QVector<ProFileEvaluator::SourceFile> &sources)
+DllExport QStringList ProFileEvaluator::sourcesToFiles(const QVector<ProFileEvaluator::SourceFile> &sources)
 {
     QStringList result;
     result.reserve(sources.size());
@@ -127,13 +133,13 @@ QStringList ProFileEvaluator::sourcesToFiles(const QVector<ProFileEvaluator::Sou
     return result;
 }
 
-QStringList ProFileEvaluator::featureRoots() const
+DllExport QStringList ProFileEvaluator::featureRoots() const
 {
     return d->m_featureRoots->paths;
 }
 
 // VFS note: all search paths are assumed to be real.
-QStringList ProFileEvaluator::absolutePathValues(
+DllExport QStringList ProFileEvaluator::absolutePathValues(
         const QString &variable, const QString &baseDirectory) const
 {
     QStringList result;
@@ -145,7 +151,7 @@ QStringList ProFileEvaluator::absolutePathValues(
     return result;
 }
 
-QVector<ProFileEvaluator::SourceFile> ProFileEvaluator::absoluteFileValues(
+DllExport QVector<ProFileEvaluator::SourceFile> ProFileEvaluator::absoluteFileValues(
         const QString &variable, const QString &baseDirectory, const QStringList &searchDirs,
         QHash<ProString, bool> *handled, QSet<QString> &directoriesWithWildcards) const
 {
@@ -205,7 +211,7 @@ QVector<ProFileEvaluator::SourceFile> ProFileEvaluator::absoluteFileValues(
     return result;
 }
 
-ProFileEvaluator::TemplateType ProFileEvaluator::templateType() const
+DllExport ProFileEvaluator::TemplateType ProFileEvaluator::templateType() const
 {
     static QString str_staticlib = QStringLiteral("staticlib");
 
@@ -226,7 +232,7 @@ ProFileEvaluator::TemplateType ProFileEvaluator::templateType() const
     return TT_Unknown;
 }
 
-bool ProFileEvaluator::loadNamedSpec(const QString &specDir, bool hostSpec)
+DllExport bool ProFileEvaluator::loadNamedSpec(const QString &specDir, bool hostSpec)
 {
     d->m_qmakespec = specDir;
     d->m_hostBuild = hostSpec;
@@ -235,7 +241,7 @@ bool ProFileEvaluator::loadNamedSpec(const QString &specDir, bool hostSpec)
     return d->loadSpecInternal();
 }
 
-bool ProFileEvaluator::accept(ProFile *pro, QMakeEvaluator::LoadFlags flags)
+DllExport bool ProFileEvaluator::accept(ProFile *pro, QMakeEvaluator::LoadFlags flags)
 {
     static QString str_no_include_pwd = QStringLiteral("no_include_pwd");
     static QString str_plugin = QStringLiteral("plugin");
@@ -281,19 +287,19 @@ bool ProFileEvaluator::accept(ProFile *pro, QMakeEvaluator::LoadFlags flags)
     return true;
 }
 
-QString ProFileEvaluator::propertyValue(const QString &name) const
+DllExport QString ProFileEvaluator::propertyValue(const QString &name) const
 {
     return d->m_option->propertyValue(ProKey(name)).toQString();
 }
 
 #ifdef PROEVALUATOR_CUMULATIVE
-void ProFileEvaluator::setCumulative(bool on)
+DllExport void ProFileEvaluator::setCumulative(bool on)
 {
     d->m_cumulative = on;
 }
 #endif
 
-void ProFileEvaluator::setExtraVars(const QHash<QString, QStringList> &extraVars)
+DllExport void ProFileEvaluator::setExtraVars(const QHash<QString, QStringList> &extraVars)
 {
     ProValueMap map;
     QHash<QString, QStringList>::const_iterator it = extraVars.constBegin();
@@ -303,12 +309,12 @@ void ProFileEvaluator::setExtraVars(const QHash<QString, QStringList> &extraVars
     d->setExtraVars(map);
 }
 
-void ProFileEvaluator::setExtraConfigs(const QStringList &extraConfigs)
+DllExport void ProFileEvaluator::setExtraConfigs(const QStringList &extraConfigs)
 {
      d->setExtraConfigs(ProStringList(extraConfigs));
 }
 
-void ProFileEvaluator::setOutputDir(const QString &dir)
+DllExport void ProFileEvaluator::setOutputDir(const QString &dir)
 {
     d->m_outputDir = dir;
 }

@@ -29,6 +29,12 @@
 #include <qfile.h>
 #include <qregularexpression.h>
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 #ifdef Q_OS_WIN
 #  include <windows.h>
 #else
@@ -46,7 +52,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QMakeInternal;
 
-IoUtils::FileType IoUtils::fileType(const QString &fileName)
+DllExport IoUtils::FileType IoUtils::fileType(const QString &fileName)
 {
     // FIXME:
     if (fileName.startsWith("docker:/")) {
@@ -77,7 +83,7 @@ IoUtils::FileType IoUtils::fileType(const QString &fileName)
 #endif
 }
 
-bool IoUtils::isRelativePath(const QString &path)
+DllExport bool IoUtils::isRelativePath(const QString &path)
 {
 #ifdef QMAKE_BUILTIN_PRFS
     if (path.startsWith(QLatin1String(":/")))
@@ -103,17 +109,17 @@ bool IoUtils::isRelativePath(const QString &path)
     return true;
 }
 
-QStringView IoUtils::pathName(const QString &fileName)
+DllExport QStringView IoUtils::pathName(const QString &fileName)
 {
     return QStringView{fileName}.left(fileName.lastIndexOf(QLatin1Char('/')) + 1);
 }
 
-QStringView IoUtils::fileName(const QString &fileName)
+DllExport QStringView IoUtils::fileName(const QString &fileName)
 {
     return QStringView(fileName).mid(fileName.lastIndexOf(QLatin1Char('/')) + 1);
 }
 
-QString IoUtils::resolvePath(const QString &baseDir, const QString &fileName)
+DllExport QString IoUtils::resolvePath(const QString &baseDir, const QString &fileName)
 {
     if (fileName.isEmpty())
         return QString();
@@ -146,7 +152,7 @@ bool hasSpecialChars(const QString &arg, const uchar (&iqm)[16])
     return false;
 }
 
-QString IoUtils::shellQuoteUnix(const QString &arg)
+DllExport QString IoUtils::shellQuoteUnix(const QString &arg)
 {
     // Chars that should be quoted (TM). This includes:
     static const uchar iqm[] = {
@@ -166,7 +172,7 @@ QString IoUtils::shellQuoteUnix(const QString &arg)
     return ret;
 }
 
-QString IoUtils::shellQuoteWin(const QString &arg)
+DllExport QString IoUtils::shellQuoteWin(const QString &arg)
 {
     // Chars that should be quoted (TM). This includes:
     // - control chars & space
@@ -232,7 +238,7 @@ static QString windowsErrorCode()
 }
 #  endif
 
-bool IoUtils::touchFile(const QString &targetFileName, const QString &referenceFileName, QString *errorString)
+DllExport bool IoUtils::touchFile(const QString &targetFileName, const QString &referenceFileName, QString *errorString)
 {
 #  ifdef Q_OS_UNIX
     struct stat st;
@@ -278,7 +284,7 @@ bool IoUtils::touchFile(const QString &targetFileName, const QString &referenceF
 }
 
 #if defined(QT_BUILD_QMAKE) && defined(Q_OS_UNIX)
-bool IoUtils::readLinkTarget(const QString &symlinkPath, QString *target)
+DllExport bool IoUtils::readLinkTarget(const QString &symlinkPath, QString *target)
 {
     const QByteArray localSymlinkPath = QFile::encodeName(symlinkPath);
 #  if defined(__GLIBC__) && !defined(PATH_MAX)

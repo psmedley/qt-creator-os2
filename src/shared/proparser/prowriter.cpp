@@ -34,6 +34,12 @@
 #include <QPair>
 #include <QRegularExpression>
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 Q_LOGGING_CATEGORY(prowriterLog, "qtc.prowriter", QtWarningMsg)
 
 using namespace QmakeProjectManager::Internal;
@@ -176,7 +182,7 @@ static const ushort *skipToken(ushort tok, const ushort *&tokPtr, int &lineNo)
     return nullptr;
 }
 
-QString ProWriter::compileScope(const QString &scope)
+DllExport QString ProWriter::compileScope(const QString &scope)
 {
     if (scope.isEmpty())
         return QString();
@@ -203,7 +209,7 @@ static bool startsWithTokens(const ushort *that, const ushort *thatEnd, const us
     return true;
 }
 
-bool ProWriter::locateVarValues(const ushort *tokPtr, const ushort *tokPtrEnd,
+DllExport bool ProWriter::locateVarValues(const ushort *tokPtr, const ushort *tokPtrEnd,
     const QString &scope, const QString &var, int *scopeStart, int *bestLine)
 {
     const bool inScope = scope.isEmpty();
@@ -308,7 +314,7 @@ static ContinuationInfo skipContLines(QStringList *lines, int lineNo, bool addCo
     return ci;
 }
 
-void ProWriter::putVarValues(ProFile *profile, QStringList *lines, const QStringList &values,
+DllExport void ProWriter::putVarValues(ProFile *profile, QStringList *lines, const QStringList &values,
                              const QString &var, PutFlags flags, const QString &scope,
                              const QString &continuationIndent)
 {
@@ -413,7 +419,7 @@ void ProWriter::putVarValues(ProFile *profile, QStringList *lines, const QString
     }
 }
 
-void ProWriter::addFiles(ProFile *profile, QStringList *lines, const QStringList &values,
+DllExport void ProWriter::addFiles(ProFile *profile, QStringList *lines, const QStringList &values,
                          const QString &var, const QString &continuationIndent)
 {
     QStringList valuesToWrite;
@@ -459,7 +465,7 @@ static void findProVariables(const ushort *tokPtr, const QStringList &vars,
     }
 }
 
-QList<int> ProWriter::removeVarValues(ProFile *profile, QStringList *lines,
+DllExport QList<int> ProWriter::removeVarValues(ProFile *profile, QStringList *lines,
     const QStringList &values, const QStringList &vars, VarLocations *removedLocations)
 {
     QList<int> notChanged;
@@ -583,7 +589,7 @@ QList<int> ProWriter::removeVarValues(ProFile *profile, QStringList *lines,
     return notChanged;
 }
 
-QStringList ProWriter::removeFiles(
+DllExport QStringList ProWriter::removeFiles(
         ProFile *profile,
         QStringList *lines,
         const QDir &proFileDir,

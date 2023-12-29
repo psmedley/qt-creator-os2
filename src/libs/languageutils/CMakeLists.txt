@@ -4,4 +4,5 @@ add_qtc_library(LanguageUtils
     componentversion.cpp componentversion.h
     fakemetaobject.cpp fakemetaobject.h
     languageutils_global.h
+  OS2_SHORT_NAME LangUtl
 )

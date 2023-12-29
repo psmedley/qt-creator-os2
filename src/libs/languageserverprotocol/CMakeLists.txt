@@ -21,4 +21,5 @@ add_qtc_library(LanguageServerProtocol
     shutdownmessages.cpp shutdownmessages.h
     textsynchronization.cpp textsynchronization.h
     workspace.cpp workspace.h
+  OS2_SHORT_NAME LangSePr
 )

@@ -31,10 +31,16 @@
 #include <qstringlist.h>
 #include <qtextstream.h>
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 QT_BEGIN_NAMESPACE
 
 // from qhash.cpp
-uint ProString::hash(const QChar *p, int n)
+DllExport uint ProString::hash(const QChar *p, int n)
 {
     uint h = 0;
 
@@ -46,119 +52,119 @@ uint ProString::hash(const QChar *p, int n)
     return h;
 }
 
-ProString::ProString() :
+DllExport ProString::ProString() :
     m_offset(0), m_length(0), m_file(0), m_hash(0x80000000)
 {
 }
 
-ProString::ProString(const ProString &other) :
+DllExport ProString::ProString(const ProString &other) :
     m_string(other.m_string), m_offset(other.m_offset), m_length(other.m_length), m_file(other.m_file), m_hash(other.m_hash)
 {
 }
 
-ProString::ProString(const ProString &other, OmitPreHashing) :
+DllExport ProString::ProString(const ProString &other, OmitPreHashing) :
     m_string(other.m_string), m_offset(other.m_offset), m_length(other.m_length), m_file(other.m_file), m_hash(0x80000000)
 {
 }
 
-ProString::ProString(const QString &str, DoPreHashing) :
+DllExport ProString::ProString(const QString &str, DoPreHashing) :
     m_string(str), m_offset(0), m_length(str.length()), m_file(0)
 {
     updatedHash();
 }
 
-ProString::ProString(const QString &str) :
+DllExport ProString::ProString(const QString &str) :
     m_string(str), m_offset(0), m_length(str.length()), m_file(0), m_hash(0x80000000)
 {
 }
 
-ProString::ProString(Utils::StringView str) :
+DllExport ProString::ProString(Utils::StringView str) :
     m_string(str.toString()), m_offset(0), m_length(str.size()), m_file(0), m_hash(0x80000000)
 {
 }
 
-ProString::ProString(const char *str, DoPreHashing) :
+DllExport ProString::ProString(const char *str, DoPreHashing) :
     m_string(QString::fromLatin1(str)), m_offset(0), m_length(int(qstrlen(str))), m_file(0)
 {
     updatedHash();
 }
 
-ProString::ProString(const char *str) :
+DllExport ProString::ProString(const char *str) :
     m_string(QString::fromLatin1(str)), m_offset(0), m_length(int(qstrlen(str))), m_file(0), m_hash(0x80000000)
 {
 }
 
-ProString::ProString(const QString &str, int offset, int length, DoPreHashing) :
+DllExport ProString::ProString(const QString &str, int offset, int length, DoPreHashing) :
     m_string(str), m_offset(offset), m_length(length), m_file(0)
 {
     updatedHash();
 }
 
-ProString::ProString(const QString &str, int offset, int length, uint hash) :
+DllExport ProString::ProString(const QString &str, int offset, int length, uint hash) :
     m_string(str), m_offset(offset), m_length(length), m_file(0), m_hash(hash)
 {
 }
 
-ProString::ProString(const QString &str, int offset, int length) :
+DllExport ProString::ProString(const QString &str, int offset, int length) :
     m_string(str), m_offset(offset), m_length(length), m_file(0), m_hash(0x80000000)
 {
 }
 
-void ProString::setValue(const QString &str)
+DllExport void ProString::setValue(const QString &str)
 {
     m_string = str, m_offset = 0, m_length = str.length(), m_hash = 0x80000000;
 }
 
-uint ProString::updatedHash() const
+DllExport uint ProString::updatedHash() const
 {
      return (m_hash = hash(m_string.constData() + m_offset, m_length));
 }
 
-Utils::QHashValueType qHash(const ProString &str)
+DllExport Utils::QHashValueType qHash(const ProString &str)
 {
     if (!(str.m_hash & 0x80000000))
         return str.m_hash;
     return str.updatedHash();
 }
 
-ProKey::ProKey(const QString &str) :
+DllExport ProKey::ProKey(const QString &str) :
     ProString(str, DoHash)
 {
 }
 
-ProKey::ProKey(const char *str) :
+DllExport ProKey::ProKey(const char *str) :
     ProString(str, DoHash)
 {
 }
 
-ProKey::ProKey(const QString &str, int off, int len) :
+DllExport ProKey::ProKey(const QString &str, int off, int len) :
     ProString(str, off, len, DoHash)
 {
 }
 
-ProKey::ProKey(const QString &str, int off, int len, uint hash) :
+DllExport ProKey::ProKey(const QString &str, int off, int len, uint hash) :
     ProString(str, off, len, hash)
 {
 }
 
-void ProKey::setValue(const QString &str)
+DllExport void ProKey::setValue(const QString &str)
 {
     m_string = str, m_offset = 0, m_length = str.length();
     updatedHash();
 }
 
-QString ProString::toQString() const
+DllExport QString ProString::toQString() const
 {
     return m_string.mid(m_offset, m_length);
 }
 
-QString &ProString::toQString(QString &tmp) const
+DllExport QString &ProString::toQString(QString &tmp) const
 {
     tmp = m_string.mid(m_offset, m_length);
     return tmp;
 }
 
-ProString &ProString::prepend(const ProString &other)
+DllExport ProString &ProString::prepend(const ProString &other)
 {
     if (other.m_length) {
         if (!m_length) {
@@ -175,7 +181,7 @@ ProString &ProString::prepend(const ProString &other)
     return *this;
 }
 
-ProString &ProString::append(const QLatin1String other)
+DllExport ProString &ProString::append(const QLatin1String other)
 {
     if (other.size()) {
         if (m_length != m_string.length()) {
@@ -192,7 +198,7 @@ ProString &ProString::append(const QLatin1String other)
     return *this;
 }
 
-ProString &ProString::append(QChar other)
+DllExport ProString &ProString::append(QChar other)
 {
     if (m_length != m_string.length()) {
         m_string = toStringView() + other;
@@ -208,7 +214,7 @@ ProString &ProString::append(QChar other)
 }
 
 // If pending != 0, prefix with space if appending to non-empty non-pending
-ProString &ProString::append(const ProString &other, bool *pending)
+DllExport ProString &ProString::append(const ProString &other, bool *pending)
 {
     if (other.m_length) {
         if (!m_length) {
@@ -233,7 +239,7 @@ ProString &ProString::append(const ProString &other, bool *pending)
     return *this;
 }
 
-ProString &ProString::append(const ProStringList &other, bool *pending, bool skipEmpty1st)
+DllExport ProString &ProString::append(const ProStringList &other, bool *pending, bool skipEmpty1st)
 {
     if (const int sz = other.size()) {
         int startIdx = 0;
@@ -275,7 +281,7 @@ ProString &ProString::append(const ProStringList &other, bool *pending, bool ski
     return *this;
 }
 
-QString operator+(const ProString &one, const ProString &two)
+DllExport QString operator+(const ProString &one, const ProString &two)
 {
     if (two.m_length) {
         if (!one.m_length) {
@@ -292,7 +298,7 @@ QString operator+(const ProString &one, const ProString &two)
 }
 
 
-ProString ProString::mid(int off, int len) const
+DllExport ProString ProString::mid(int off, int len) const
 {
     ProString ret(*this, NoHash);
     if (off > m_length)
@@ -304,7 +310,7 @@ ProString ProString::mid(int off, int len) const
     return ret;
 }
 
-ProString ProString::trimmed() const
+DllExport ProString ProString::trimmed() const
 {
     ProString ret(*this, NoHash);
     int cur = m_offset;
@@ -322,7 +328,7 @@ ProString ProString::trimmed() const
     return ret;
 }
 
-QTextStream &operator<<(QTextStream &t, const ProString &str)
+DllExport QTextStream &operator<<(QTextStream &t, const ProString &str)
 {
     t << str.toStringView();
     return t;
@@ -353,36 +359,36 @@ static QString ProStringList_join(const ProStringList &this_, const QChar *sep, 
     return res;
 }
 
-QString ProStringList::join(const ProString &sep) const
+DllExport QString ProStringList::join(const ProString &sep) const
 {
     return ProStringList_join(*this, sep.constData(), sep.size());
 }
 
-QString ProStringList::join(const QString &sep) const
+DllExport QString ProStringList::join(const QString &sep) const
 {
     return ProStringList_join(*this, sep.constData(), sep.size());
 }
 
-QString ProStringList::join(QChar sep) const
+DllExport QString ProStringList::join(QChar sep) const
 {
     return ProStringList_join(*this, &sep, 1);
 }
 
-void ProStringList::removeAll(const ProString &str)
+DllExport void ProStringList::removeAll(const ProString &str)
 {
     for (int i = size(); --i >= 0; )
         if (at(i) == str)
             remove(i);
 }
 
-void ProStringList::removeAll(const char *str)
+DllExport void ProStringList::removeAll(const char *str)
 {
     for (int i = size(); --i >= 0; )
         if (at(i) == str)
             remove(i);
 }
 
-void ProStringList::removeEach(const ProStringList &value)
+DllExport void ProStringList::removeEach(const ProStringList &value)
 {
     for (const ProString &str : value) {
         if (isEmpty())
@@ -392,14 +398,14 @@ void ProStringList::removeEach(const ProStringList &value)
     }
 }
 
-void ProStringList::removeEmpty()
+DllExport void ProStringList::removeEmpty()
 {
     for (int i = size(); --i >= 0;)
         if (at(i).isEmpty())
             remove(i);
 }
 
-void ProStringList::removeDuplicates()
+DllExport void ProStringList::removeDuplicates()
 {
     int n = size();
     int j = 0;
@@ -418,21 +424,21 @@ void ProStringList::removeDuplicates()
         erase(begin() + j, end());
 }
 
-void ProStringList::insertUnique(const ProStringList &value)
+DllExport void ProStringList::insertUnique(const ProStringList &value)
 {
     for (const ProString &str : value)
         if (!str.isEmpty() && !contains(str))
             append(str);
 }
 
-ProStringList::ProStringList(const QStringList &list)
+DllExport ProStringList::ProStringList(const QStringList &list)
 {
     reserve(list.size());
     for (const QString &str : list)
         *this << ProString(str);
 }
 
-QStringList ProStringList::toQStringList() const
+DllExport QStringList ProStringList::toQStringList() const
 {
     QStringList ret;
     ret.reserve(size());
@@ -441,7 +447,7 @@ QStringList ProStringList::toQStringList() const
     return ret;
 }
 
-bool ProStringList::contains(const ProString &str, Qt::CaseSensitivity cs) const
+DllExport bool ProStringList::contains(const ProString &str, Qt::CaseSensitivity cs) const
 {
     for (int i = 0; i < size(); i++)
         if (!at(i).compare(str, cs))
@@ -449,7 +455,7 @@ bool ProStringList::contains(const ProString &str, Qt::CaseSensitivity cs) const
     return false;
 }
 
-bool ProStringList::contains(Utils::StringView str, Qt::CaseSensitivity cs) const
+DllExport bool ProStringList::contains(Utils::StringView str, Qt::CaseSensitivity cs) const
 {
     for (int i = 0; i < size(); i++)
         if (!at(i).toStringView().compare(str, cs))
@@ -457,7 +463,7 @@ bool ProStringList::contains(Utils::StringView str, Qt::CaseSensitivity cs) cons
     return false;
 }
 
-bool ProStringList::contains(const char *str, Qt::CaseSensitivity cs) const
+DllExport bool ProStringList::contains(const char *str, Qt::CaseSensitivity cs) const
 {
     for (int i = 0; i < size(); i++)
         if (!at(i).compare(str, cs))
@@ -465,7 +471,7 @@ bool ProStringList::contains(const char *str, Qt::CaseSensitivity cs) const
     return false;
 }
 
-ProFile::ProFile(int id, const QString &fileName)
+DllExport DllExport ProFile::ProFile(int id, const QString &fileName)
     : m_refCount(1),
       m_fileName(fileName),
       m_id(id),
@@ -477,11 +483,11 @@ ProFile::ProFile(int id, const QString &fileName)
                 fileName.left(fileName.lastIndexOf(QLatin1Char('/')))).canonicalFilePath();
 }
 
-ProFile::~ProFile()
+DllExport ProFile::~ProFile()
 {
 }
 
-ProString ProFile::getStr(const ushort *&tPtr)
+DllExport ProString ProFile::getStr(const ushort *&tPtr)
 {
     uint len = *tPtr++;
     ProString ret(items(), tPtr - tokPtr(), len);
@@ -500,7 +506,7 @@ ProKey ProFile::getHashStr(const ushort *&tPtr)
     return ret;
 }
 
-QDebug operator<<(QDebug debug, const ProString &str)
+DllExport QDebug operator<<(QDebug debug, const ProString &str)
 {
     return debug << str.toQString();
 }

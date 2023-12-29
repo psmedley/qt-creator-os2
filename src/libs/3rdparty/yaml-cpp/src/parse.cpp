@@ -8,18 +8,24 @@
 #include "yaml-cpp/parser.h"
 #include "nodebuilder.h"
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 namespace YAML {
-Node Load(const std::string& input) {
+DllExport Node Load(const std::string& input) {
   std::stringstream stream(input);
   return Load(stream);
 }
 
-Node Load(const char* input) {
+DllExport Node Load(const char* input) {
   std::stringstream stream(input);
   return Load(stream);
 }
 
-Node Load(std::istream& input) {
+DllExport Node Load(std::istream& input) {
   Parser parser(input);
   NodeBuilder builder;
   if (!parser.HandleNextDocument(builder)) {
@@ -29,7 +35,7 @@ Node Load(std::istream& input) {
   return builder.Root();
 }
 
-Node LoadFile(const std::string& filename) {
+DllExport Node LoadFile(const std::string& filename) {
   std::ifstream fin(filename.c_str());
   if (!fin) {
     throw BadFile();
@@ -37,17 +43,17 @@ Node LoadFile(const std::string& filename) {
   return Load(fin);
 }
 
-std::vector<Node> LoadAll(const std::string& input) {
+DllExport std::vector<Node> LoadAll(const std::string& input) {
   std::stringstream stream(input);
   return LoadAll(stream);
 }
 
-std::vector<Node> LoadAll(const char* input) {
+DllExport std::vector<Node> LoadAll(const char* input) {
   std::stringstream stream(input);
   return LoadAll(stream);
 }
 
-std::vector<Node> LoadAll(std::istream& input) {
+DllExport std::vector<Node> LoadAll(std::istream& input) {
   std::vector<Node> docs;
 
   Parser parser(input);

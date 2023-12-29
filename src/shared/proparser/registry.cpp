@@ -29,6 +29,12 @@
 #include <QtCore/qstringlist.h>
 #include "registry_p.h"
 
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 QT_BEGIN_NAMESPACE
 
 namespace QMakeInternal {
@@ -71,7 +77,7 @@ static QString keyName(const QString &rKey)
 }
 #endif
 
-QString qt_readRegistryKey(HKEY parentHandle, const QString &rSubkey, unsigned long options)
+DllExport QString qt_readRegistryKey(HKEY parentHandle, const QString &rSubkey, unsigned long options)
 {
     QString result;
 

@@ -27,6 +27,12 @@
 
 #include "qmakevfs.h"
 #include "ioutils.h"
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
+
 using namespace QMakeInternal;
 
 #include <qfile.h>
@@ -42,12 +48,12 @@ QT_BEGIN_NAMESPACE
 //
 ///////////////////////////////////////////////////////////////////////
 
-ProFileCache::ProFileCache()
+DllExport ProFileCache::ProFileCache()
 {
     QMakeVfs::ref();
 }
 
-ProFileCache::~ProFileCache()
+DllExport ProFileCache::~ProFileCache()
 {
     for (const auto &keyValuePair : parsed_files)
         if (keyValuePair.second.pro)
@@ -55,7 +61,7 @@ ProFileCache::~ProFileCache()
     QMakeVfs::deref();
 }
 
-void ProFileCache::discardFile(const QString &fileName, QMakeVfs *vfs)
+DllExport void ProFileCache::discardFile(const QString &fileName, QMakeVfs *vfs)
 {
     int eid = vfs->idForFileName(fileName, QMakeVfs::VfsExact | QMakeVfs::VfsAccessedOnly);
     if (eid)
@@ -65,7 +71,7 @@ void ProFileCache::discardFile(const QString &fileName, QMakeVfs *vfs)
         discardFile(cid);
 }
 
-void ProFileCache::discardFile(int id)
+DllExport void ProFileCache::discardFile(int id)
 {
 #ifdef PROPARSER_THREAD_SAFE
     QMutexLocker lck(&mutex);
@@ -107,7 +113,7 @@ void ProFileCache::discardFile(int id)
     }
 }
 
-void ProFileCache::discardFiles(const QString &prefix, QMakeVfs *vfs)
+DllExport void ProFileCache::discardFiles(const QString &prefix, QMakeVfs *vfs)
 {
 #ifdef PROPARSER_THREAD_SAFE
     QMutexLocker lck(&mutex);
@@ -191,7 +197,7 @@ static struct {
 
 }
 
-void QMakeParser::initialize()
+DllExport void QMakeParser::initialize()
 {
     if (!statics.strelse.isNull())
         return;
@@ -213,7 +219,7 @@ void QMakeParser::initialize()
     statics.strLITERAL_WHITESPACE = QLatin1String("LITERAL_WHITESPACE");
 }
 
-QMakeParser::QMakeParser(ProFileCache *cache, QMakeVfs *vfs, QMakeParserHandler *handler)
+DllExport QMakeParser::QMakeParser(ProFileCache *cache, QMakeVfs *vfs, QMakeParserHandler *handler)
     : m_cache(cache)
     , m_handler(handler)
     , m_vfs(vfs)
@@ -222,7 +228,7 @@ QMakeParser::QMakeParser(ProFileCache *cache, QMakeVfs *vfs, QMakeParserHandler 
     initialize();
 }
 
-ProFile *QMakeParser::parsedProFile(const QString &fileName, ParseFlags flags)
+DllExport ProFile *QMakeParser::parsedProFile(const QString &fileName, ParseFlags flags)
 {
     ProFile *pro;
     QMakeVfs::VfsFlags vfsFlags = ((flags & ParseCumulative) ? QMakeVfs::VfsCumulative
@@ -316,7 +322,7 @@ ProFile *QMakeParser::parsedProFile(const QString &fileName, ParseFlags flags)
     return pro;
 }
 
-ProFile *QMakeParser::parsedProBlock(
+DllExport ProFile *QMakeParser::parsedProBlock(
     Utils::StringView contents, int id, const QString &name, int line, SubGrammar grammar)
 {
     ProFile *pro = new ProFile(id, name);
@@ -324,13 +330,13 @@ ProFile *QMakeParser::parsedProBlock(
     return pro;
 }
 
-void QMakeParser::discardFileFromCache(int id)
+DllExport void QMakeParser::discardFileFromCache(int id)
 {
     if (m_cache)
         m_cache->discardFile(id);
 }
 
-bool QMakeParser::readFile(int id, ParseFlags flags, QString *contents)
+DllExport bool QMakeParser::readFile(int id, ParseFlags flags, QString *contents)
 {
     QString errStr;
     QMakeVfs::ReadResult result = m_vfs->readFile(id, contents, &errStr);
@@ -343,24 +349,24 @@ bool QMakeParser::readFile(int id, ParseFlags flags, QString *contents)
     return true;
 }
 
-void QMakeParser::putTok(ushort *&tokPtr, ushort tok)
+DllExport void QMakeParser::putTok(ushort *&tokPtr, ushort tok)
 {
     *tokPtr++ = tok;
 }
 
-void QMakeParser::putBlockLen(ushort *&tokPtr, uint len)
+DllExport void QMakeParser::putBlockLen(ushort *&tokPtr, uint len)
 {
     *tokPtr++ = (ushort)len;
     *tokPtr++ = (ushort)(len >> 16);
 }
 
-void QMakeParser::putBlock(ushort *&tokPtr, const ushort *buf, uint len)
+DllExport void QMakeParser::putBlock(ushort *&tokPtr, const ushort *buf, uint len)
 {
     memcpy(tokPtr, buf, len * 2);
     tokPtr += len;
 }
 
-void QMakeParser::putHashStr(ushort *&pTokPtr, const ushort *buf, uint len)
+DllExport void QMakeParser::putHashStr(ushort *&pTokPtr, const ushort *buf, uint len)
 {
     uint hash = ProString::hash((const QChar *)buf, len);
     ushort *tokPtr = pTokPtr;
@@ -372,7 +378,7 @@ void QMakeParser::putHashStr(ushort *&pTokPtr, const ushort *buf, uint len)
     pTokPtr = tokPtr + len;
 }
 
-void QMakeParser::finalizeHashStr(ushort *buf, uint len)
+DllExport void QMakeParser::finalizeHashStr(ushort *buf, uint len)
 {
     buf[-4] = TokHashLiteral;
     buf[-1] = len;
@@ -381,7 +387,7 @@ void QMakeParser::finalizeHashStr(ushort *buf, uint len)
     buf[-2] = (ushort)(hash >> 16);
 }
 
-void QMakeParser::read(ProFile *pro, Utils::StringView in, int line, SubGrammar grammar)
+DllExport void QMakeParser::read(ProFile *pro, Utils::StringView in, int line, SubGrammar grammar)
 {
     m_proFile = pro;
     m_lineNo = line;
@@ -970,7 +976,7 @@ void QMakeParser::read(ProFile *pro, Utils::StringView in, int line, SubGrammar 
 #undef FLUSH_RHS_LITERAL
 }
 
-void QMakeParser::putLineMarker(ushort *&tokPtr)
+DllExport void QMakeParser::putLineMarker(ushort *&tokPtr)
 {
     if (m_markLine) {
         *tokPtr++ = TokLine;
@@ -979,7 +985,7 @@ void QMakeParser::putLineMarker(ushort *&tokPtr)
     }
 }
 
-void QMakeParser::enterScope(ushort *&tokPtr, bool special, ScopeState state)
+DllExport void QMakeParser::enterScope(ushort *&tokPtr, bool special, ScopeState state)
 {
     uchar nest = m_blockstack.top().nest;
     m_blockstack.resize(m_blockstack.size() + 1);
@@ -993,7 +999,7 @@ void QMakeParser::enterScope(ushort *&tokPtr, bool special, ScopeState state)
         m_markLine = m_lineNo;
 }
 
-void QMakeParser::leaveScope(ushort *&tokPtr)
+DllExport void QMakeParser::leaveScope(ushort *&tokPtr)
 {
     if (m_blockstack.top().inBranch) {
         // Put empty else block
@@ -1009,7 +1015,7 @@ void QMakeParser::leaveScope(ushort *&tokPtr)
 }
 
 // If we are on a fresh line, close all open one-line scopes.
-void QMakeParser::flushScopes(ushort *&tokPtr)
+DllExport void QMakeParser::flushScopes(ushort *&tokPtr)
 {
     if (m_state == StNew) {
         while (!m_blockstack.top().braceLevel && m_blockstack.size() > 1)
@@ -1024,7 +1030,7 @@ void QMakeParser::flushScopes(ushort *&tokPtr)
 }
 
 // If there is a pending conditional, enter a new scope, otherwise flush scopes.
-void QMakeParser::flushCond(ushort *&tokPtr)
+DllExport void QMakeParser::flushCond(ushort *&tokPtr)
 {
     if (m_state == StCond) {
         putTok(tokPtr, TokBranch);
@@ -1035,7 +1041,7 @@ void QMakeParser::flushCond(ushort *&tokPtr)
     }
 }
 
-void QMakeParser::warnOperator(const char *msg)
+DllExport void QMakeParser::warnOperator(const char *msg)
 {
     if (m_invert) {
         languageWarning(fL1S("Stray NOT operator %1.").arg(fL1S(msg)));
@@ -1050,7 +1056,7 @@ void QMakeParser::warnOperator(const char *msg)
     }
 }
 
-bool QMakeParser::failOperator(const char *msg)
+DllExport bool QMakeParser::failOperator(const char *msg)
 {
     bool fail = false;
     if (m_invert) {
@@ -1070,14 +1076,14 @@ bool QMakeParser::failOperator(const char *msg)
     return fail;
 }
 
-bool QMakeParser::acceptColon(const char *msg)
+DllExport bool QMakeParser::acceptColon(const char *msg)
 {
     if (m_operator == AndOperator)
         m_operator = NoOperator;
     return !failOperator(msg);
 }
 
-void QMakeParser::putOperator(ushort *&tokPtr)
+DllExport void QMakeParser::putOperator(ushort *&tokPtr)
 {
     if (m_operator== AndOperator) {
         // A colon must be used after else and for() if no brace is used,
@@ -1091,7 +1097,7 @@ void QMakeParser::putOperator(ushort *&tokPtr)
     }
 }
 
-void QMakeParser::finalizeTest(ushort *&tokPtr)
+DllExport void QMakeParser::finalizeTest(ushort *&tokPtr)
 {
     flushScopes(tokPtr);
     putLineMarker(tokPtr);
@@ -1103,7 +1109,7 @@ void QMakeParser::finalizeTest(ushort *&tokPtr)
     m_canElse = true;
 }
 
-void QMakeParser::bogusTest(ushort *&tokPtr, const QString &msg)
+DllExport void QMakeParser::bogusTest(ushort *&tokPtr, const QString &msg)
 {
     if (!msg.isEmpty())
         parseError(msg);
@@ -1114,7 +1120,7 @@ void QMakeParser::bogusTest(ushort *&tokPtr, const QString &msg)
     m_canElse = true;
 }
 
-void QMakeParser::finalizeCond(ushort *&tokPtr, ushort *uc, ushort *ptr, int wordCount)
+DllExport void QMakeParser::finalizeCond(ushort *&tokPtr, ushort *uc, ushort *ptr, int wordCount)
 {
     if (wordCount != 1) {
         if (wordCount)
@@ -1163,7 +1169,7 @@ void QMakeParser::finalizeCond(ushort *&tokPtr, ushort *uc, ushort *ptr, int wor
     putTok(tokPtr, TokCondition);
 }
 
-void QMakeParser::finalizeCall(ushort *&tokPtr, ushort *uc, ushort *ptr, int argc)
+DllExport void QMakeParser::finalizeCall(ushort *&tokPtr, ushort *uc, ushort *ptr, int argc)
 {
     // Check for magic tokens
     if (*uc == TokHashLiteral) {
@@ -1328,7 +1334,7 @@ void QMakeParser::finalizeCall(ushort *&tokPtr, ushort *uc, ushort *ptr, int arg
     putBlock(tokPtr, uc, ptr - uc);
 }
 
-bool QMakeParser::resolveVariable(ushort *xprPtr, int tlen, int needSep, ushort **ptr,
+DllExport bool QMakeParser::resolveVariable(ushort *xprPtr, int tlen, int needSep, ushort **ptr,
                                   ushort **buf, QString *xprBuff,
                                   ushort **tokPtr, QString *tokBuff,
                                   const ushort *cur, Utils::StringView in)
@@ -1379,7 +1385,7 @@ bool QMakeParser::resolveVariable(ushort *xprPtr, int tlen, int needSep, ushort 
     return true;
 }
 
-void QMakeParser::message(int type, const QString &msg) const
+DllExport void QMakeParser::message(int type, const QString &msg) const
 {
     if (!m_inError && m_handler)
         m_handler->message(type, msg, m_proFile->fileName(), m_lineNo);
@@ -1629,7 +1635,7 @@ static bool getBlock(const ushort *tokens, int limit, int &offset, QString *outS
     return true;
 }
 
-QString QMakeParser::formatProBlock(const QString &block)
+DllExport QString QMakeParser::formatProBlock(const QString &block)
 {
     QString outStr;
     outStr += fL1S("\n            << TS(");

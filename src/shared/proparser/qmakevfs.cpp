@@ -33,10 +33,15 @@ using namespace QMakeInternal;
 #include <qfileinfo.h>
 
 #define fL1S(s) QString::fromLatin1(s)
+#ifdef __OS2__
+#define DllExport   __declspec( dllexport )
+#else
+#define DllExport
+#endif
 
 QT_BEGIN_NAMESPACE
 
-QMakeVfs::QMakeVfs()
+DllExport QMakeVfs::QMakeVfs()
 #ifndef PROEVALUATOR_FULL
     : m_magicMissing(fL1S("missing"))
     , m_magicExisting(fL1S("existing"))
@@ -45,12 +50,12 @@ QMakeVfs::QMakeVfs()
     ref();
 }
 
-QMakeVfs::~QMakeVfs()
+DllExport QMakeVfs::~QMakeVfs()
 {
     deref();
 }
 
-void QMakeVfs::ref()
+DllExport void QMakeVfs::ref()
 {
 #ifdef PROEVALUATOR_THREAD_SAFE
     QMutexLocker locker(&s_mutex);
@@ -58,7 +63,7 @@ void QMakeVfs::ref()
     ++s_refCount;
 }
 
-void QMakeVfs::deref()
+DllExport void QMakeVfs::deref()
 {
 #ifdef PROEVALUATOR_THREAD_SAFE
     QMutexLocker locker(&s_mutex);
@@ -78,7 +83,7 @@ QAtomicInt QMakeVfs::s_fileIdCounter;
 QHash<QString, int> QMakeVfs::s_fileIdMap;
 QHash<int, QString> QMakeVfs::s_idFileMap;
 
-int QMakeVfs::idForFileName(const QString &fn, VfsFlags flags)
+DllExport int QMakeVfs::idForFileName(const QString &fn, VfsFlags flags)
 {
 #ifdef PROEVALUATOR_DUAL_VFS
     {
@@ -131,7 +136,7 @@ QString QMakeVfs::fileNameForId(int id)
     return s_idFileMap.value(id);
 }
 
-bool QMakeVfs::writeFile(int id, QIODevice::OpenMode mode, VfsFlags flags,
+DllExport bool QMakeVfs::writeFile(int id, QIODevice::OpenMode mode, VfsFlags flags,
                          const QString &contents, QString *errStr)
 {
 #ifndef PROEVALUATOR_FULL
@@ -184,7 +189,7 @@ bool QMakeVfs::writeFile(int id, QIODevice::OpenMode mode, VfsFlags flags,
 #endif
 }
 
-QMakeVfs::ReadResult QMakeVfs::readFile(int id, QString *contents, QString *errStr)
+DllExport QMakeVfs::ReadResult QMakeVfs::readFile(int id, QString *contents, QString *errStr)
 {
 #ifndef PROEVALUATOR_FULL
 # ifdef PROEVALUATOR_THREAD_SAFE
@@ -229,7 +234,7 @@ QMakeVfs::ReadResult QMakeVfs::readFile(int id, QString *contents, QString *errS
     return ReadOk;
 }
 
-bool QMakeVfs::exists(const QString &fn, VfsFlags flags)
+DllExport bool QMakeVfs::exists(const QString &fn, VfsFlags flags)
 {
 #ifndef PROEVALUATOR_FULL
 # ifdef PROEVALUATOR_THREAD_SAFE
@@ -251,7 +256,7 @@ bool QMakeVfs::exists(const QString &fn, VfsFlags flags)
 
 #ifndef PROEVALUATOR_FULL
 // This should be called when the sources may have changed (e.g., VCS update).
-void QMakeVfs::invalidateCache()
+DllExport void QMakeVfs::invalidateCache()
 {
 # ifdef PROEVALUATOR_THREAD_SAFE
     QMutexLocker locker(&m_mutex);
@@ -267,7 +272,7 @@ void QMakeVfs::invalidateCache()
 }
 
 // This should be called when generated files may have changed (e.g., actual build).
-void QMakeVfs::invalidateContents()
+DllExport void QMakeVfs::invalidateContents()
 {
 # ifdef PROEVALUATOR_THREAD_SAFE
     QMutexLocker locker(&m_mutex);
